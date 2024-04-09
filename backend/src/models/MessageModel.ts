@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const MessageSchema = new mongoose.Schema({
     chat_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,3 +24,5 @@ const MessageSchema = new mongoose.Schema({
         default: false,
     },
 });
+
+module.exports = mongoose.model("Message", MessageSchema);

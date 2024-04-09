@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const ChatSchema = new mongoose.Schema({
     participants: {
         type: [
@@ -29,4 +30,4 @@ const ChatSchema = new mongoose.Schema({
     },
 });
 
-const Chat = mongoose.model("Chat", ChatSchema);
+module.exports = mongoose.model("Chat", ChatSchema);
