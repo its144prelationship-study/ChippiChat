@@ -13,15 +13,15 @@ const MessageSchema = new mongoose.Schema({
     message_text: {
         type: String,
         required: true,
-        maxlenght: [500, "Message cannot be more than 500 characters"],
+        maxlength: [500, "Message cannot be more than 500 characters"],
     },
     send_at: {
         type: Date,
         default: Date.now,
     },
-    is_read: {
-        type: Boolean,
-        default: false,
+    read_receivers: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        default: [],
     },
 });
 
