@@ -1,11 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 const mongoose = require("mongoose");
-const connectDB = require("./config/db");
+const connectDB = require("./configs/db");
 const cookieParser = require("cookie-parser");
 
-dotenv.config({ path: "./config/config.env" });
-
+const configPath = path.resolve(__dirname, "configs", "config.env");
+dotenv.config({ path: configPath });
 connectDB();
 
 const app = express();
