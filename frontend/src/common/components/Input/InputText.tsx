@@ -1,11 +1,4 @@
-interface InputTextProps {
-    label: string;
-    valid: boolean;
-    placeholder: string;
-    spellCheck: boolean;
-    value: string;
-    handleOnChange: (value: string) => void;
-}
+import { InputTextProps } from "../../types/InputTextType";
 
 export default function InputText(props: InputTextProps) {
     return <div className="flex flex-row font-light h-[5.5rem]">
