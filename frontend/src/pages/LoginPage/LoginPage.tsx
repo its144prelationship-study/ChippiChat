@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
+import InputText from "../../common/components/Input/InputText";
 
 export default function LoginPage() {
-    const [valid, setValid] = useState(true);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [valid, setValid] = useState<boolean>(true);
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const tempPassword = '*'.repeat(password.length);
+
+    const onChangePassword = (value: string) => {
+        if (value.length > password.length) {
+            setPassword(password + value[value.length - 1]);
+        } else if (value.length < password.length) {
+            setPassword(password.slice(0, password.length - 1));
+        }
+    }
 
     useEffect(() => {
         console.log("Username: ", username);
@@ -23,26 +33,20 @@ export default function LoginPage() {
                     <div className="font-light text-9xl text-black">LOGIN</div>
                     <div className="h-7 font-normal text-xl text-cpc-red my-3">{valid ? "" : "Incorrect username or password !"}</div>
                     <div className="flex flex-col gap-12 mt-2">
-                        <div className="font-light h-[5.5rem]">
-                            <span className="text-3xl text-black">Username:</span>
-                            <input className={`w-[22rem] rounded-xl ml-3 pl-3 py-7 text-2xl items-center placeholder-[#B0B0B0] ${valid ? 'bg-cpc-gray' : 'bg-[#FF9F9F]'} inner-shadow-4`}
-                                type="text"
-                                placeholder="Enter Your Username"
-                                spellCheck="false"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </div>
-                        <div className="font-light h-[5.5rem]">
-                            <span className="text-3xl text-black">Password:</span>
-                            <input className={`w-[22rem] rounded-xl ml-3 pl-3 py-7 text-2xl items-center placeholder-[#B0B0B0] ${valid ? 'bg-cpc-gray' : 'bg-[#FF9F9F]'} inner-shadow-4`}
-                                type="password"
-                                placeholder="Enter Your Password"
-                                spellCheck="false"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                        <InputText
+                            label="Username"
+                            valid={valid}
+                            placeholder="Enter Your Username"
+                            spellCheck={false}
+                            value={username}
+                            handleOnChange={(value) => setUsername(value)} />
+                        <InputText
+                            label="Password"
+                            valid={valid}
+                            placeholder="Enter Your Password"
+                            spellCheck={false}
+                            value={tempPassword}
+                            handleOnChange={onChangePassword} />
                     </div>
                     <div className="flex flex-row gap-5 mt-20">
                         <span className="font-normal text-xl text-cpc-blue">Don't have an account yet ?<br /><u>SIGN IN</u></span>
