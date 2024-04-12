@@ -24,10 +24,6 @@ export default {
         '.inner-shadow-4': {
           boxShadow: 'inset 4px 4px 4px rgba(0, 0, 0, 0.25)',
         },
-        'input[type="password"]': {
-          '-webkit-text-security': 'disc',
-          'text-security': 'disc',
-        },
       };
 
       addUtilities(newUtilities, ['responsive', 'hover']);

@@ -4,7 +4,6 @@ import InputText from "../../common/components/Input/InputText";
 // import { UserLoginSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 
-
 export default function LoginPage() {
     const [valid, setValid] = useState<boolean>(true);
     const [username, setUsername] = useState<string>("");
@@ -39,7 +38,7 @@ export default function LoginPage() {
         LocalStorageUtils.setData("token", data.token);
         LocalStorageUtils.setData("username", username);
 
-        window.location.href = "/chat";
+        window.location.href = "/search";
     }
 
     const onChangePassword = (value: string) => {
