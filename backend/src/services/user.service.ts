@@ -49,7 +49,7 @@ export const userService = {
                 };
             }
 
-            const isMatch = user.matchPassword(body.password);
+            const isMatch = await user.matchPassword(body.password);
             if (!isMatch) {
                 return {
                     success: false,
@@ -62,7 +62,10 @@ export const userService = {
             return {
                 success: true,
                 message: 'User logged in',
-                token: token,
+                data: {
+                    username: user.username,
+                    token: token,
+                },
             };
         } catch (err) {
             console.error(err.message);
