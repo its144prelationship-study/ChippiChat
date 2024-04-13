@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import InputText from "../../common/components/Input/InputText";
-// import { LoginService } from "./services/LoginService";
-// import { UserLoginSchema } from "./types/LoginType";
+import { LoginService } from "./services/LoginService";
+import { LoginSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 
 export default function LoginPage() {
@@ -10,9 +10,9 @@ export default function LoginPage() {
     const [password, setPassword] = useState<string>("");
     const tempPassword = '*'.repeat(password.length);
 
-    // if (LocalStorageUtils.getData("token")) {
-    //     window.location.href = "/chat";
-    // }
+    if (LocalStorageUtils.getData("token")) {
+        window.location.href = "/search";
+    }
 
     const login = async () => {
         if (username.length === 0 || password.length === 0) {
@@ -20,23 +20,20 @@ export default function LoginPage() {
             return;
         }
 
-        // const loginInfo: UserLoginSchema = { email: username, password: password };
-        // const data = await LoginService.loginUser(loginInfo);
-        // console.log(data);
+        const loginInfo: LoginSchema = {
+            username: username,
+            password: password
+        };
 
-        const data = {
-            success: true,
-            token: "temp token"
-        }
-
-        if (!data.success) {
+        const response = await LoginService.login(loginInfo);
+        if (!response.success) {
             setValid(false);
             return;
         }
 
         setValid(true);
-        LocalStorageUtils.setData("token", data.token);
-        LocalStorageUtils.setData("username", username);
+        LocalStorageUtils.setData("token", response.data.token);
+        LocalStorageUtils.setData("username", response.data.username);
 
         window.location.href = "/search";
     }

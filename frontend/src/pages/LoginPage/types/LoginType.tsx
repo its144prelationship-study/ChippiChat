@@ -1,4 +1,4 @@
-export interface UserLoginSchema {
-    email: string
+export interface LoginSchema {
+    username: string
     password: string
 }
