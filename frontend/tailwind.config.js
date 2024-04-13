@@ -6,9 +6,10 @@ export default {
       colors: {
         'cpc-blue': '#2260FF',
         'cpc-green': '#41EAAD',
+        'cpc-dark-green': '#39BE8E',
         'cpc-red': '#FF1F00',
-        'cpc-gray': '#D9D9D9',
         'cpc-light-gray': '#F7F7F7',
+        'cpc-gray': '#D9D9D9',
       },
       fontFamily: {
         'dm-mono': ['DM Mono', 'monospace'],
