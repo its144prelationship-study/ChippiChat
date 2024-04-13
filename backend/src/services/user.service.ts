@@ -1,10 +1,46 @@
-import bcrypt from 'bcryptjs';
-import { userRepository } from '../repositories/user.repository';
+import { CreateUser, LoginRequest } from "../types/user.types";
+import { userRepository } from "../repositories/user.repository";
+
+const bcrypt = require('bcrypt');
 
 export const userService = {
-    login: async (username: string, password: string) => {
+    createUser: async (body: CreateUser) => {
         try {
-            const user = await userRepository.findUser(null, username);
+            const existingUser = await userRepository.findUser(null, body.username)
+            if (existingUser) {
+                return { 
+                    success: false, 
+                    code: 400,
+                    message: 'Username already exists'
+                }
+            }
+
+            const user = await userRepository.createUser(body);
+            if (user) {
+                return {
+                    success: true,
+                    message: 'User created',
+                    data: user,
+                };
+            } else {
+                return {
+                    success: false,
+                    code: 500,
+                    message: 'Cannot create user',
+                };
+            }
+        } catch (err) {
+            console.error(err.message);
+            return {
+                success: false,
+                code: 500,
+                message: 'Internal server error',
+            };
+        }
+    },
+    login: async (body: LoginRequest) => {
+        try {
+            const user = await userRepository.findUser(null, body.username);
             if (!user) {
                 return {
                     success: false,
@@ -13,7 +49,7 @@ export const userService = {
                 };
             }
 
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = user.matchPassword(body.password);
             if (!isMatch) {
                 return {
                     success: false,
@@ -22,13 +58,14 @@ export const userService = {
                 };
             }
 
+            const token = user.getSignedJwtToken();
             return {
                 success: true,
                 message: 'User logged in',
-                data: user,
+                token: token,
             };
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            console.error(err.message);
             return {
                 success: false,
                 message: 'Internal server error',
