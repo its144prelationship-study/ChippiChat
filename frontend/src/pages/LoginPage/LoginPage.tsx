@@ -52,43 +52,61 @@ export default function LoginPage() {
     }, [valid, username, password]);
 
     return (
-        <div>
-            <div className="bg-cpc-blue w-screen h-screen px-12 py-[10vh] flex flex-row gap-10 font-dm-mono">
-                <div className="flex flex-col gap-2  select-none">
-                    <img src="../chat-bubble.svg" className="w-[0.62] ml-auto -mr-5 -mb-6" />
-                    <div className="font-normal text-9xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mb-12">ChippiChat</div>
-                    <div className="bg-gradient-to-r from-white to-black/0 w-full h-1 my-4"></div>
-                    <div className="font-light text-[1.75rem] text-white ml-2">Login to start a conversation . . .</div>
-                </div>
-                <div className="bg-cpc-light-gray/[0.9] w-full h-auto rounded-xl flex flex-col items-center my-14 p-10 drop-shadow-[4px_4px_5px_rgba(0,0,0,0.25)] select-none">
-                    <div className="font-light text-9xl text-black">LOGIN</div>
-                    <div className="h-7 font-normal text-xl text-cpc-red my-3">{valid ? "" : "Incorrect username or password !"}</div>
-                    <div className="flex flex-col gap-12 mt-2">
-                        <InputText
-                            label="Username"
-                            valid={valid}
-                            placeholder="Enter Your Username"
-                            spellCheck={false}
-                            value={username}
-                            handleOnChange={(value) => setUsername(value)} />
-                        <InputText
-                            label="Password"
-                            valid={valid}
-                            placeholder="Enter Your Password"
-                            spellCheck={false}
-                            value={tempPassword}
-                            handleOnChange={onChangePassword} />
-                    </div>
-                    <div className="flex flex-row gap-5 mt-20">
-                        <span className="font-normal text-xl text-cpc-blue">
-                            Don't have an account yet ?
-                            <br />
-                            <a href="/register" className="underline">SIGN IN</a>
-                        </span>
-                        <div className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer border rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none" onClick={() => login()}>LOG IN</div>
-                    </div>
-                </div>
+      <main className="w-full min-h-full bg-cpc-blue">
+        <div className="min-h-[100vh] flex flex-wrap justify-evenly items-center gap-10 font-dm-mono">
+          <div className="flex flex-col gap-2 select-none mb-44">
+            <img
+              src="../chat-bubble.svg"
+              className="w-[0.62] ml-auto -mr-5 -mb-6"
+            />
+            <div className="font-normal text-9xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mb-12">
+              ChippiChat
             </div>
+            <div className="bg-gradient-to-r from-white to-black/0 w-full h-1 my-4"></div>
+            <div className="font-light text-[1.75rem] text-white ml-2">
+              Login to start a conversation . . .
+            </div>
+          </div>
+          <div className="bg-cpc-light-gray/[0.9] rounded-xl flex flex-col items-center p-10 my-5 drop-shadow-[4px_4px_5px_rgba(0,0,0,0.25)] select-none">
+            <div className="font-light text-9xl text-black">LOGIN</div>
+            <div className="h-7 font-normal text-xl text-cpc-red my-3">
+              {valid ? "" : "Incorrect username or password !"}
+            </div>
+            <div className="flex flex-col gap-12 mt-2">
+              <InputText
+                label="Username"
+                valid={valid}
+                placeholder="Enter Your Username"
+                spellCheck={false}
+                value={username}
+                handleOnChange={(value) => setUsername(value)}
+              />
+              <InputText
+                label="Password"
+                valid={valid}
+                placeholder="Enter Your Password"
+                spellCheck={false}
+                value={tempPassword}
+                handleOnChange={onChangePassword}
+              />
+            </div>
+            <div className="flex flex-row gap-5 mt-20">
+              <span className="font-normal text-xl text-cpc-blue">
+                Don't have an account yet ?
+                <br />
+                <a href="/register" className="underline">
+                  SIGN IN
+                </a>
+              </span>
+              <div
+                className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer border rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"
+                onClick={() => login()}
+              >
+                LOG IN
+              </div>
+            </div>
+          </div>
         </div>
+      </main>
     );
 }
