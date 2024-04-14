@@ -51,7 +51,7 @@ export default function LoginPage() {
       <div className="min-h-[100vh] flex flex-wrap justify-evenly items-center gap-10 font-dm-mono">
         <div className="flex flex-col gap-2 select-none mb-44">
           <img
-            src="../chat-bubble.svg"
+            src="../src/assets/chat-bubble.svg"
             className="w-[0.62] ml-auto -mr-5 -mb-6"
           />
           <div className="font-normal text-9xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mb-12">
