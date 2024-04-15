@@ -39,13 +39,13 @@ export default function ChatListComponent({
               </h3>
             )}
           </span>
-          <p className="font-ibm-plex-mono text-[#888888] font-thin text-sm mt-[1px]">
+          <p className="font-ibm-plex-mono text-[#888888] font-normal text-sm mt-[1px]">
             {chatter.last_message}
           </p>
         </div>
       </div>
       <div className="flex flex-col">
-        <p className="font-ibm-plex-mono text-[#888888] font-thin text-sm">
+        <p className="font-ibm-plex-mono text-[#888888] font-light text-sm">
           {showedDate()}
         </p>
         {chatter.is_pinned && (

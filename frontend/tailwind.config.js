@@ -14,8 +14,7 @@ export default {
       },
       fontFamily: {
         "dm-mono": ["DM Mono", "monospace"],
-        "ibm-plex-mono": ["IBM Plex Mono", "monospace"],
-        "ibm-plex-sans-thai": ["IBM Plex Sans Thai", "sans-serif"],
+        "ibm-plex-mono": ["IBM Plex Mono", "monospace", "IBM Plex Sans Thai", "sans-serif"],
       },
     },
   },
