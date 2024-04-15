@@ -4,30 +4,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        'cpc-blue': '#2260FF',
-        'cpc-green': '#41EAAD',
-        'cpc-dark-green': '#39BE8E',
-        'cpc-red': '#FF1F00',
-        'cpc-light-gray': '#F7F7F7',
-        'cpc-gray': '#D9D9D9',
+        "cpc-blue": "#2260FF",
+        "cpc-green": "#41EAAD",
+        "cpc-dark-green": "#39BE8E",
+        "cpc-red": "#FF1F00",
+        "cpc-light-gray": "#F7F7F7",
+        "cpc-gray": "#D9D9D9",
+        "cpc-orange": "#FF994E",
       },
       fontFamily: {
-        'dm-mono': ['DM Mono', 'monospace'],
+        "dm-mono": ["DM Mono", "monospace"],
       },
     },
   },
   plugins: [
     function ({ addUtilities }) {
       const newUtilities = {
-        '.inner-shadow-2': {
-          boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.25)',
+        ".inner-shadow-2": {
+          boxShadow: "inset 2px 2px 4px rgba(0, 0, 0, 0.25)",
         },
-        '.inner-shadow-4': {
-          boxShadow: 'inset 4px 4px 4px rgba(0, 0, 0, 0.25)',
+        ".inner-shadow-4": {
+          boxShadow: "inset 4px 4px 4px rgba(0, 0, 0, 0.25)",
         },
       };
 
-      addUtilities(newUtilities, ['responsive', 'hover']);
+      addUtilities(newUtilities, ["responsive", "hover"]);
     },
   ],
 };
