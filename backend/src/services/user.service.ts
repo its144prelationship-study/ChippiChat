@@ -63,6 +63,7 @@ export const userService = {
                 success: true,
                 message: 'User logged in',
                 data: {
+                    user_id: user._id,
                     username: user.username,
                     token: token,
                 },

@@ -4,11 +4,11 @@ import { LoginSchema } from "../types/LoginType"
 export const LoginService = {
 	login: async (loginInfo: LoginSchema) => {
 		const response = await fetch(`http://localhost:5789/api/user/login`, {
-		method: "POST",
-		body: JSON.stringify(loginInfo),
-		headers: {
-			"Content-Type": "application/json"
-		}
+			method: "POST",
+			body: JSON.stringify(loginInfo),
+			headers: {
+				"Content-Type": "application/json"
+			}
 		});
 		return response.json();
 	},

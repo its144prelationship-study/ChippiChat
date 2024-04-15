@@ -1,11 +1,11 @@
 import userRouter from "./routes/user.routes";
+import { connectSocket } from "./configs/socket";
 
 const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
 const mongoose = require("mongoose");
 const connectDB = require("./configs/db");
-const connectSocket = require("./configs/socket");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -28,10 +28,9 @@ const userRoutes = require("./routes/user.routes");
 
 const PORT = process.env.PORT || 5789;
 
-server.listen(
-  PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
-);
+server.listen(PORT, () => {
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+});
 
 app.use("/api/user", userRouter);
 
