@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const mongoose = require("mongoose");
 const connectDB = require("./configs/db");
+const connectSocket = require("./configs/socket");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -13,12 +14,13 @@ dotenv.config({ path: configPath });
 connectDB();
 
 const app = express();
+const server = connectSocket(app);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
   {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
   }
 ));
 
@@ -26,7 +28,7 @@ const userRoutes = require("./routes/user.routes");
 
 const PORT = process.env.PORT || 5789;
 
-const server = app.listen(
+server.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
