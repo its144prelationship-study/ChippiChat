@@ -3,8 +3,12 @@ import PinMark from "../../../assets/pin-mark.svg";
 
 export default function ChatListComponent({
   chatter,
+  is_selected,
+  setSelectedChat,
 }: {
   chatter: ChatListType;
+  is_selected: boolean;
+  setSelectedChat: (selectedChat: string) => void;
 }) {
   const showedDate = () => {
     const today = new Date();
@@ -24,8 +28,11 @@ export default function ChatListComponent({
   };
   return (
     <div
-      className="bg-[#D9D9D9] w-full p-2 flex flex-row justify-between rounded-md hover:bg-[#e0e0e0] hover:scale-[101%] hover:shadow-md cursor-pointer transition duration-200 ease-in-out"
-      onClick={chatter.onChatClick}
+      className={`${is_selected ? "bg-[#f1f1f1] shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)]" : "bg-[#D9D9D9] hover:bg-[#e0e0e0] hover:shadow-md "} w-full p-2 flex flex-row justify-between rounded-md cursor-pointer hover:scale-[101%] transition duration-200 ease-in-out`}
+      onClick={() => {
+        chatter.onChatClick();
+        setSelectedChat(chatter.id);
+      }}
     >
       <div className="flex flex-row space-x-4">
         <ProfilePicture className="h-16 w-16" pic={chatter.profile_picture} />
@@ -47,17 +54,24 @@ export default function ChatListComponent({
           </p>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col items-end justify-between">
         <p className="font-ibm-plex-mono text-[#888888] font-light text-sm">
           {showedDate()}
         </p>
-        {chatter.is_pinned && (
+        <div className="flex flex-row">
           <img
             src={PinMark}
             alt="pin mark"
-            className="h-6 w-6 ml-2 mt-2 -translate-x-80 translate-y-3"
+            className={`h-6 w-6 ml-2 mt-2 -translate-x-[19rem] ${chatter.is_pinned ? "" : "opacity-0"}`}
           />
-        )}
+          <div
+            className={`bg-cpc-orange w-6 h-6 rounded-full flex justify-center items-center ${chatter.unread > 0 ? "" : "opacity-0"}`}
+          >
+            <p className="text-white font-ibm-plex-mono font-normal text-xs">
+              {chatter.unread}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
