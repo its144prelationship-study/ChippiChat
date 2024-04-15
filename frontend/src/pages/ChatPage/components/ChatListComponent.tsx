@@ -23,7 +23,10 @@ export default function ChatListComponent({
     }
   };
   return (
-    <div className="bg-[#D9D9D9] w-full p-2 flex flex-row justify-between rounded-md">
+    <div
+      className="bg-[#D9D9D9] w-full p-2 flex flex-row justify-between rounded-md hover:bg-[#e0e0e0] hover:scale-[101%] hover:shadow-md cursor-pointer transition duration-200 ease-in-out"
+      onClick={chatter.onChatClick}
+    >
       <div className="flex flex-row space-x-4">
         <ProfilePicture className="h-16 w-16" pic={chatter.profile_picture} />
         <div className="flex flex-col py-2">

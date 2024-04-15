@@ -10,4 +10,5 @@ type ChatListType = {
       profile_picture: ProfilePictureEnum
       is_group: boolean,
       members: number,
+      onChatClick: () => void
     };
