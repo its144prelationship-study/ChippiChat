@@ -1,7 +1,9 @@
+import { useState } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
 
 export default function ChatPage() {
+  const [createGroup, setCreateGroup] = useState(false);
   const chatLists: ChatListType[] = [
     {
       id: "1",
@@ -13,6 +15,7 @@ export default function ChatPage() {
       profile_picture: "6",
       is_group: false,
       members: 2,
+      onChatClick: () => {},
     },
     {
       id: "2",
@@ -24,6 +27,7 @@ export default function ChatPage() {
       profile_picture: "1",
       is_group: false,
       members: 2,
+      onChatClick: () => {},
     },
     {
       id: "3",
@@ -35,12 +39,19 @@ export default function ChatPage() {
       profile_picture: "12",
       is_group: true,
       members: 3,
+      onChatClick: () => {},
     },
   ];
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
+      {createGroup && (
+        <div
+          className="absolute inset-0 bg-black bg-opacity-40 z-10"
+          onClick={() => setCreateGroup(false)}
+        />
+      )}
       <div className="flex flex-row">
-        <ChatLists chatLists={chatLists} />
+        <ChatLists chatLists={chatLists} setCreateGroup={setCreateGroup} />
         <Chat />
       </div>
     </main>
