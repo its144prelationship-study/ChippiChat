@@ -1,7 +1,7 @@
 import { useState } from "react";
 import InputText from "../../common/components/Input/InputText";
 import { LoginService } from "./services/LoginService";
-import { LoginSchema } from "./types/LoginType";
+import { LoginSchema, OnlineUserSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import { io } from "socket.io-client"
 
@@ -37,7 +37,12 @@ export default function LoginPage() {
     LocalStorageUtils.setData("token", response.data.token);
     LocalStorageUtils.setData("username", response.data.username);
 
-    socket.emit("addOnlineUser", response.data.user_id);
+    const user: OnlineUserSchema = {
+      user_id: response.data.user_id,
+      username: response.data.username
+    };
+
+    socket.emit("addOnlineUser", user);
 
     window.location.href = "/search";
   };

@@ -11,7 +11,8 @@ export const connectSocket = (app: Application) => {
     io.on("connection", (socket: Socket) => {
         console.log("New connection from user:", socket.id);
 
-        socket.on("addOnlineUser", (username: string) => socketService.addOnlineUser(socket.id, username));
+        socketService.addOnlineUser(socket);
+        socketService.removeOnlineUser(socket);
     });
 
     return server;
