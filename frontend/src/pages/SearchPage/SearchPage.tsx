@@ -9,7 +9,7 @@ export default function SearchPage() {
       profile_picture: "1",
     },
     {
-      chat_name: "BaanNeeMeerak",
+      chat_name: "BaanNeeMeerakkkk",
       members: 5,
       profile_picture: "11",
     },

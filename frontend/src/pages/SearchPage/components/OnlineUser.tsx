@@ -31,7 +31,7 @@ export default function OnlineUser({
           handleMouseEnter={handleMouseEnter}
           handleMouseLeave={handleMouseLeave}
           pic={profile_picture}
-          className={`h-[8.5rem] rounded-full bg-cover ${isHovered ? "border-cpc-orange" : "border-white"} border-4 cursor-pointer`}
+          className={`h-[8.5rem] w-[8.5rem] rounded-full bg-cover ${isHovered ? "border-cpc-orange" : "border-white"} border-4 cursor-pointer`}
         />
         <img
           onMouseEnter={handleMouseEnter}
@@ -40,13 +40,24 @@ export default function OnlineUser({
           className="absolute w-20 h-20 -translate-y-6 translate-x-[8.2rem] cursor-pointer"
         />
       </div>
-      <p
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={`py-2 font-dm-mono text-2xl font-medium ${isHovered ? "text-cpc-orange" : "text-white"}`}
-      >
-        {chat_name} {is_group ? `(${members.toString()})` : ""}
-      </p>
+      <span className="flex flex-row">
+        <p
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={`py-2 font-dm-mono text-2xl font-medium ${isHovered ? "text-cpc-orange" : "text-white"} overflow-auto`}
+        >
+          {chat_name.length > 12 ? chat_name.slice(0, 12) + ".." : chat_name}
+        </p>
+        {is_group && (
+          <p
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={`py-2 font-dm-mono text-2xl font-medium ${isHovered ? "text-cpc-orange" : "text-white"}`}
+          >
+            {`(${members.toString()})`}
+          </p>
+        )}
+      </span>
     </div>
   );
 }
