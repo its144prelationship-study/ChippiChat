@@ -21,8 +21,8 @@ export default function ProfilePicture({
 }: {
   pic: string;
   className: string;
-  handleMouseEnter?: () => void;
-  handleMouseLeave?: () => void;
+  handleMouseEnter?: () => void | undefined;
+  handleMouseLeave?: () => void | undefined;
 }) {
   let selectedPic = "";
 
