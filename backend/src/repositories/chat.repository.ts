@@ -20,4 +20,12 @@ export const chatRepository = {
       return null;
     }
   },
+  getAllChats: async (userId: string) => {
+    try {
+      return await Chat.find({ participants: { $in: [userId] } });
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
 };

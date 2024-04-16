@@ -3,6 +3,7 @@ import { chatController } from "../controllers/chat.controller";
 
 const router = Router();
 
-router.post("/create", chatController.createChat);
+router.post("/", chatController.createChat);
+router.get("/:userId", chatController.getAllChats);
 
 export default router;

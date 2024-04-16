@@ -36,4 +36,20 @@ export const chatService = {
       };
     }
   },
+  getAllChats: async (userId: string) => {
+    try {
+      const chats = await chatRepository.getAllChats(userId);
+      return {
+        success: true,
+        data: chats,
+      };
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
 };

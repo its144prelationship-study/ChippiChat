@@ -1,5 +1,6 @@
 import userRouter from "./routes/user.routes";
 import chatRouter from "./routes/chat.routes";
+import messageRouter from "./routes/message.routes";
 import { connectSocket } from "./configs/socket";
 
 const express = require("express");
@@ -35,6 +36,7 @@ server.listen(PORT, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/message", messageRouter);
 
 process.on("unhandledRejection", (err, promise) => {
   server.close(process.exit(1));

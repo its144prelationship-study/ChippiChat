@@ -34,4 +34,15 @@ export const chatController = {
       });
     }
   },
+  getAllChats: async (req: Request, res: Response) => {
+    try {
+      const chats = await chatService.getAllChats(req.params.userId);
+      res.status(200).json(chats);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
 };
