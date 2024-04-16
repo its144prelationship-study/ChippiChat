@@ -1,10 +1,9 @@
-import { CreateChat } from "../types/chat.types";
-import mongoose from "mongoose";
+import { CreateChatRequest } from "../types/chat.types";
 
 const Chat = require("../models/ChatModel");
 
 export const chatRepository = {
-  createChat: async (body: CreateChat) => {
+  createChat: async (body: CreateChatRequest) => {
     try {
       const chat = await Chat.create(body);
       return chat;
@@ -13,7 +12,7 @@ export const chatRepository = {
       return null;
     }
   },
-  findChat: async (participants: mongoose.Types.ObjectId[]) => {
+  findChat: async (participants: string[]) => {
     try {
       return await Chat.findOne({ participants: participants });
     } catch (error) {

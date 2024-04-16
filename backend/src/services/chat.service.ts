@@ -1,22 +1,11 @@
-import { CreateChatRequest, CreateChat } from "../types/chat.types";
+import { CreateChatRequest } from "../types/chat.types";
 import { chatRepository } from "../repositories/chat.repository";
-import mongoose from "mongoose";
 
 export const chatService = {
   createChat: async (body: CreateChatRequest) => {
     try {
-      const participantIds = body.participants.map(
-        (participantId) => new mongoose.Types.ObjectId(participantId)
-      );
-      const newChat: CreateChat = {
-        participants: participantIds,
-        group_name: body.group_name,
-        group_picture: body.group_picture,
-        background_color: body.background_color,
-        is_group: body.is_group,
-      };
-      newChat.participants.sort();
-      const existingChat = await chatRepository.findChat(newChat.participants);
+      body.participants.sort();
+      const existingChat = await chatRepository.findChat(body.participants);
       if (existingChat) {
         return {
           success: false,
@@ -24,7 +13,7 @@ export const chatService = {
           message: "Chat already exists",
         };
       }
-      const chat = await chatRepository.createChat(newChat);
+      const chat = await chatRepository.createChat(body);
       if (chat) {
         return {
           success: true,
