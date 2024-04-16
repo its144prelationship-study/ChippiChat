@@ -4,7 +4,6 @@ import { chatRepository } from "../repositories/chat.repository";
 export const chatService = {
   createChat: async (body: CreateChatRequest) => {
     try {
-      body.participants.sort();
       const existingChat = await chatRepository.findChat(body.participants);
       if (existingChat) {
         return {
@@ -43,6 +42,88 @@ export const chatService = {
         success: true,
         data: chats,
       };
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
+  getAllGroupChats: async () => {
+    try {
+      const chats = await chatRepository.getAllGroupChats();
+      return {
+        success: true,
+        data: chats,
+      };
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
+  joinGroupChat: async (chatId: string, userId: string) => {
+    try {
+      const existingChat = await chatRepository.isInGroupChat(chatId, userId);
+      if (existingChat) {
+        return {
+          success: false,
+          code: 400,
+          message: "User already in chat",
+        };
+      }
+      const chat = await chatRepository.joinGroupChat(chatId, userId);
+      if (chat) {
+        return {
+          success: true,
+          message: "User joined chat",
+          data: chat,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot join chat",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
+  leaveGroupChat: async (chatId: string, userId: string) => {
+    try {
+      const existingChat = await chatRepository.isInGroupChat(chatId, userId);
+      if (!existingChat) {
+        return {
+          success: false,
+          code: 400,
+          message: "User not in chat",
+        };
+      }
+      const chat = await chatRepository.leaveGroupChat(chatId, userId);
+      if (chat) {
+        return {
+          success: true,
+          message: "User left chat",
+          data: chat,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot leave chat",
+        };
+      }
     } catch (err) {
       console.error(err.message);
       return {
