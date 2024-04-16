@@ -1,4 +1,5 @@
 import userRouter from "./routes/user.routes";
+import chatRouter from "./routes/chat.routes";
 import { connectSocket } from "./configs/socket";
 
 const express = require("express");
@@ -18,11 +19,11 @@ const server = connectSocket(app);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(
-  {
+app.use(
+  cors({
     origin: process.env.FRONTEND_URL,
-  }
-));
+  })
+);
 
 const userRoutes = require("./routes/user.routes");
 
@@ -33,6 +34,7 @@ server.listen(PORT, () => {
 });
 
 app.use("/api/user", userRouter);
+app.use("/api/chat", chatRouter);
 
 process.on("unhandledRejection", (err, promise) => {
   server.close(process.exit(1));
