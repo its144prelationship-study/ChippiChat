@@ -17,7 +17,7 @@ export default function ChatLists({
       <img
         src={CreateGroupIcon}
         alt="create group"
-        className="h-20 absolute translate-x-[22.5rem] translate-y-[33rem]"
+        className="h-20 absolute translate-x-[22.5rem] translate-y-[33rem] hover:scale-[105%] transition ease-in-out duration-200 cursor-pointer"
         onClick={() => setCreateGroup(true)}
       />
       {chatLists.map((chatList, index) => (

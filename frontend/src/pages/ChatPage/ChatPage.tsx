@@ -51,7 +51,7 @@ export default function ChatPage() {
       {(createGroup || changeColor) && (
         <div
           className="absolute inset-0 bg-black bg-opacity-40 z-10"
-          onClick={() => setCreateGroup(false)}
+          onClick={() => {setCreateGroup(false); setChangeColor(false);}}
         />
       )}
       <div className="flex flex-row">
