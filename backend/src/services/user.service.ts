@@ -58,7 +58,7 @@ export const userService = {
         };
       }
 
-      const token = user.getSignedJwtToken();
+      const token = await user.getSignedJwtToken();
       return {
         success: true,
         message: "User logged in",

@@ -35,7 +35,6 @@ export default function LoginPage() {
 
     setValid(true);
     LocalStorageUtils.setData("token", response.data.token);
-    LocalStorageUtils.setData("username", response.data.username);
 
     const user: OnlineUserSchema = {
       user_id: response.data.user_id,
