@@ -5,9 +5,11 @@ import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay";
 export default function ConfirmModal({
   isVisible,
   onClose,
+  onConfirm,
 }: {
   isVisible: boolean;
   onClose: () => void;
+  onConfirm: () => void;
 }) {
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
@@ -17,7 +19,7 @@ export default function ConfirmModal({
         </div>
         <div className="flex flex-row space-x-10">
           <CancelButton onCancel={() => {onClose()}} />
-          <ConfirmButton onConfirm={() => {}} />
+          <ConfirmButton onConfirm={() => {onConfirm()}} />
         </div>
       </div>
     </ModalOverlay>

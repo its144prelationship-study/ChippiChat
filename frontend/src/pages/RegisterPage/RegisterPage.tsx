@@ -12,14 +12,16 @@ export default function RegisterPage() {
       >
         <InputForm />
       </div>
-      <div style={{textShadow : "2px 2px 1px rgba(0, 0, 0, 0.25)"}} className="flex flex-row font-monospace text-cpc-orange text-2xl space-x-2">
+      <div
+        style={{ textShadow: "2px 2px 1px rgba(0, 0, 0, 0.25)" }}
+        className="flex flex-row font-monospace text-cpc-orange text-2xl space-x-2"
+      >
         <div className="italic">WARNING : </div>
         <div>
           เว็บไซต์นี้สามารถช่วยเปิดโอกาสให้คุณเริ่มบทสนทนากับคนอื่นได้
           แต่ไม่ช่วยให้ได้คบ
         </div>
       </div>
-      
     </main>
   );
 }

@@ -5,26 +5,29 @@ import InputText from "../../../common/components/Input/InputText";
 import ProfilePic from "./ProfilePic";
 import ConfirmModal from "./ConfirmModal";
 import PicChooser from "../../../common/components/PicChooser/PicChooser";
+import { RegisterService } from "../services/RegisterService";
+import { RegisterSchema, profilePicture } from "../types/RegisterType";
 
 export default function InputForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [profilePic, setProfilePic] = useState("1");
+  const [profilePic, setProfilePic] = useState<profilePicture>(1);
   const [isPicChooserOpen, setIsPicChooserOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  //check
-  const [validUsername, setValidUsername] = useState(true);
+  const [validUsername, setValidUsername] = useState(0); //0 = valid 1 = "" 2 = already exist
   const [validPassword, setValidPassword] = useState(true);
   const tempPassword = "*".repeat(password.length);
   const tempPassword2 = "*".repeat(password2.length);
-  const pics = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const pics: profilePicture[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const onChangePassword = (value: string, mode: string) => {
     let tmppass;
     if (mode == "1") {
       tmppass = password;
-      if(value !== ""){setValidPassword(true)}
+      if (value !== "") {
+        setValidPassword(true);
+      }
     } else {
       tmppass = password2;
     }
@@ -43,6 +46,20 @@ export default function InputForm() {
     }
   };
 
+  const register = async () => {
+    const registerInfo: RegisterSchema = {
+      username: username,
+      password: password,
+      profile_picture: profilePic,
+    };
+    const response = await RegisterService.createUser(registerInfo);
+    console.log(response);
+    if (!response.success) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   return (
     <div className="flex flex-col w-fit">
       <div className="flex flex-row space-x-24 mt-8">
@@ -50,15 +67,19 @@ export default function InputForm() {
           <div className="w-[570px] flex flex-col justify-items-end items-end space-y-1">
             <InputText
               label="Username"
-              valid={validUsername}
+              valid={validUsername === 0 ? true : false}
               placeholder="Enter Your Username"
               spellCheck={false}
               value={username}
               handleOnChange={(value) => setUsername(value)}
             />
-            {validUsername === false ? (
+            {validUsername === 1 ? (
               <div className="text-center text-cpc-red font-light text-xl">
                 Please enter your username
+              </div>
+            ) : validUsername === 2 ? (
+              <div className="text-center text-cpc-red font-light text-lg">
+                This username is already taken !
               </div>
             ) : null}
           </div>
@@ -83,13 +104,17 @@ export default function InputForm() {
                 onChangePassword(value, "2");
               }}
             />
-            {validPassword === false ? password === "" ? (
-              <div className="text-center text-cpc-red font-light text-xl">
-                Please enter your password
-              </div>) : <div className="text-center text-cpc-red font-light text-xl">
-                Password do not match !
-              </div>
-             : null}
+            {validPassword === false ? (
+              password === "" ? (
+                <div className="text-center text-cpc-red font-light text-xl">
+                  Please enter your password
+                </div>
+              ) : (
+                <div className="text-center text-cpc-red font-light text-xl">
+                  Password do not match !
+                </div>
+              )
+            ) : null}
           </div>
         </div>
         <ProfilePic
@@ -106,17 +131,27 @@ export default function InputForm() {
           }}
         />
         <ConfirmButton
-          onConfirm={() => {
-            if (username === "") {
-              setValidUsername(false);
-            } else {
-              if (password === "" || password !== password2) {
-                setValidPassword(false);
-                setValidUsername(true);
+          onConfirm={async () => {
+            try {
+              const valid = await RegisterService.validateUsername(username);
+              if (username === "") {
+                setValidUsername(1);
               } else {
-                setValidPassword(true);
-                setIsConfirmOpen(true);
+                if (valid) {
+                  if (password === "" || password !== password2) {
+                    setValidPassword(false);
+                    setValidUsername(0);
+                  } else {
+                    setValidPassword(true);
+                    setValidUsername(0);
+                    setIsConfirmOpen(true);
+                  }
+                } else {
+                  setValidUsername(2);
+                }
               }
+            } catch (error) {
+              console.error("Error validating username:", error);
             }
           }}
         />
@@ -137,6 +172,16 @@ export default function InputForm() {
         isVisible={isConfirmOpen}
         onClose={() => {
           setIsConfirmOpen(false);
+        }}
+        onConfirm={async () => {
+          const success = await register();
+          if (success) {
+            setIsConfirmOpen(false);
+            window.location.href = "http://localhost:5173/search";
+          } else {
+            setIsConfirmOpen(false);
+            alert("Cannot Create User");
+          }
         }}
       />
     </div>
