@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
 import Rings from "../../assets/rings.svg";
@@ -19,6 +19,7 @@ export default function ChatPage() {
       profile_picture: "6",
       is_group: false,
       members: 2,
+      bg_color: "orange",
       onChatClick: () => {},
     },
     {
@@ -31,6 +32,7 @@ export default function ChatPage() {
       profile_picture: "1",
       is_group: false,
       members: 2,
+      bg_color: "pink",
       onChatClick: () => {},
     },
     {
@@ -43,15 +45,161 @@ export default function ChatPage() {
       profile_picture: "12",
       is_group: true,
       members: 3,
+      bg_color: "yellow",
       onChatClick: () => {},
     },
   ];
+  const currentId = "00";
+  const chatMessages = [
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:00",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:01",
+    },
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:04",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:04",
+    },
+  ];
+  const groupMembers = [
+    {
+      id: "00",
+      profile_picture: "1",
+      username: "mhadeang0",
+    },
+    {
+      id: "11",
+      profile_picture: "2",
+      username: "mhadeang1",
+    },
+    {
+      id: "22",
+      profile_picture: "3",
+      username: "mhadeang2",
+    },
+  ];
+  const chatGroupMessages = [
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:00",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:01",
+    },
+    {
+      id: "22",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "22",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:02",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:03",
+    },
+    {
+      id: "00",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:04",
+    },
+    {
+      id: "11",
+      message: "hihihihihihihihihihihihi",
+      timestamp: "2024-04-16 11:04",
+    },
+  ];
+  useEffect(() => {
+    for (let i = 0; i < chatLists.length; i++) {
+      if (chatLists[i].id === selectedChat) {
+        setChatColor(chatLists[i].bg_color);
+        break;
+      }
+    }
+  }, [selectedChat, chatColor]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       {(createGroup || changeColor) && (
         <div
           className="absolute inset-0 bg-black bg-opacity-40 z-10"
-          onClick={() => {setCreateGroup(false); setChangeColor(false);}}
+          onClick={() => {
+            setCreateGroup(false);
+            setChangeColor(false);
+          }}
         />
       )}
       <div className="flex flex-row">
@@ -65,8 +213,16 @@ export default function ChatPage() {
           setCreateGroup={setCreateGroup}
           selectedChat={selectedChat}
           setSelectedChat={setSelectedChat}
+          chatColor={chatColor}
         />
-        <Chat chatColor={chatColor} setChangeColor={setChangeColor} selectedChat={selectedChat} />
+        <Chat
+          chatColor={chatColor}
+          setChangeColor={setChangeColor}
+          selectedChat={selectedChat}
+          chatInfo={chatLists.find(chat => chat.id === selectedChat)}
+          groupMembers={groupMembers}
+          chatMessages={chatMessages}
+        />
       </div>
     </main>
   );

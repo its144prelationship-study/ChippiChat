@@ -5,10 +5,12 @@ export default function ChatListComponent({
   chatter,
   is_selected,
   setSelectedChat,
+  color,
 }: {
   chatter: ChatListType;
   is_selected: boolean;
   setSelectedChat: (selectedChat: string) => void;
+  color: string;
 }) {
   const showedDate = () => {
     const today = new Date();
@@ -65,9 +67,9 @@ export default function ChatListComponent({
             className={`h-6 w-6 ml-2 mt-2 -translate-x-[19rem] ${chatter.is_pinned ? "" : "opacity-0"}`}
           />
           <div
-            className={`bg-cpc-orange w-6 h-6 rounded-full flex justify-center items-center ${chatter.unread > 0 ? "" : "opacity-0"}`}
+            className={`${color} w-6 h-6 rounded-full flex justify-center items-center ${chatter.unread > 0 ? "" : "opacity-0"}`}
           >
-            <p className="text-white font-ibm-plex-mono font-normal text-xs">
+            <p className={`${(color === "bg-[#FFFA7C]") ? "text-black" : "text-white"} font-ibm-plex-mono font-normal text-xs`}>
               {chatter.unread}
             </p>
           </div>

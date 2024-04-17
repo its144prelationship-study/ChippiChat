@@ -2,10 +2,16 @@ export default function Chat({
   chatColor,
   setChangeColor,
   selectedChat,
+  chatInfo,
+  groupMembers,
+  chatMessages,
 }: {
   chatColor: string;
   setChangeColor: (changeColor: boolean) => void;
   selectedChat: string;
+  chatInfo: ChatListType;
+  groupMembers: GroupMemberType[];
+  chatMessages: ChatMessageType[];
 }) {
   let bgColor = "bg-[#E2E7F7]";
   let bgTopColor = "bg-cpc-orange";
@@ -36,8 +42,10 @@ export default function Chat({
       className={`w-[60%] h-[80vh] my-10 mr-16 ml-5 ${bgColor} rounded-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)]`}
     >
       <div
-        className={`w-full h-[4.5rem] ${bgTopColor} rounded-t-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)]`}
-      ></div>
+        className={`w-full h-[4.5rem] ${bgTopColor} rounded-t-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)] flex flex-row`}
+      >
+        <p></p>
+      </div>
     </div>
   );
 }
