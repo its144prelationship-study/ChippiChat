@@ -41,13 +41,13 @@ export const userController = {
         });
       }
 
-      const user = await userService.login(req.body);
-      if (user.success) {
-        res.status(200).json(user);
+      const response = await userService.login(req.body);
+      if (response.success) {
+        res.status(200).json(response);
       } else {
-        res.status(user.code).json({
+        res.status(response.code).json({
           success: false,
-          message: user.message,
+          message: response.message,
         });
       }
     } catch (err) {
@@ -68,6 +68,21 @@ export const userController = {
       res.status(200).json({
         success: true,
         message: "User logged out",
+      });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
+  getCurrentUser: async (req: Request, res: Response) => {
+    try {
+      const user = await userService.getUserById(req.user._id);
+      res.status(200).json({
+        success: true,
+        data: user,
       });
     } catch (err) {
       console.error(err.message);
