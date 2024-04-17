@@ -15,9 +15,9 @@ export const userRepository = {
     findUser: async (id: string, username: string) => {
         try {
             if (id) {
-                return await User.findById(id).select("-password");
+                return await User.findById(id);
             } else if (username) {
-                return await User.findOne({ username: username }).select("-password");
+                return await User.findOne({ username: username });
             } else {
                 return null;
             }

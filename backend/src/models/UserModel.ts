@@ -25,6 +25,7 @@ export const UserSchema = new mongoose.Schema({
   profile_picture: {
     type: String,
     enum: ["1", "2", "3", "4", "5", "6", "7", "8", "9","10"],
+    default: "1",
   },
 });
 
@@ -42,7 +43,7 @@ UserSchema.methods.getSignedJwtToken = function () {
   });
 };
 
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+UserSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

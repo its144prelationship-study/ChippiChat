@@ -73,6 +73,7 @@ export const userService = {
       console.error(err.message);
       return {
         success: false,
+        code: 500,
         message: "Internal server error",
       };
     }

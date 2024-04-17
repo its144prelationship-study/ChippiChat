@@ -12,7 +12,7 @@ exports.protect = async (req: Request, res: Response, next: NextFunction) => {
     if (!token) {
         return res.status(401).json({
             success: false,
-            error: "Not authorized to access this route",
+            message: "Not authorized to access this route",
         });
     }
 
@@ -23,16 +23,16 @@ exports.protect = async (req: Request, res: Response, next: NextFunction) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                error: "No user found with this id",
+                message: "No user found with this id",
             });
         }
 
-        req.user = user;
         next();
-    } catch (error) {
+    } catch (err) {
+        console.log(err.message);
         return res.status(401).json({
             success: false,
-            error: "Not authorized to access this route",
+            message: "Not authorized to access this route",
         });
     }
 };

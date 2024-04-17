@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { userService } from "../services/user.service";
+import { JwtUtil } from "../utils/jwt.util";
 
 export const userController = {
   createUser: async (req: Request, res: Response) => {
@@ -79,7 +80,10 @@ export const userController = {
   },
   getCurrentUser: async (req: Request, res: Response) => {
     try {
-      const user = await userService.getUserById(req.user._id);
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = await JwtUtil.verifyToken(token);
+      console.log(decoded);
+      const user = await userService.getUserById(decoded.user_id);
       res.status(200).json({
         success: true,
         data: user,
