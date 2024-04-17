@@ -177,7 +177,7 @@ export default function InputForm() {
           const success = await register();
           if (success) {
             setIsConfirmOpen(false);
-            window.location.href = "http://localhost:5173/search";
+            window.location.href = "http://localhost:5173/login";
           } else {
             setIsConfirmOpen(false);
             alert("Cannot Create User");
