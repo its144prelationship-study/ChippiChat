@@ -133,10 +133,10 @@ export default function InputForm() {
         <ConfirmButton
           onConfirm={async () => {
             try {
-              const valid = await RegisterService.validateUsername(username);
               if (username === "") {
                 setValidUsername(1);
               } else {
+                const valid = await RegisterService.validateUsername(username);
                 if (valid) {
                   if (password === "" || password !== password2) {
                     setValidPassword(false);

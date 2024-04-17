@@ -3,6 +3,7 @@ import { RegisterSchema } from "../types/RegisterType";
 export const RegisterService = {
     validateUsername: async (username:string) => {
         const response = await fetch(`http://localhost:5789/api/user/validateUsername/${username}`);
+        console.log(response)
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
