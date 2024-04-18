@@ -82,7 +82,6 @@ export const userController = {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const decoded = await JwtUtil.verifyToken(token);
-      console.log(decoded);
       const user = await userService.getUserById(decoded.user_id);
       res.status(200).json({
         success: true,

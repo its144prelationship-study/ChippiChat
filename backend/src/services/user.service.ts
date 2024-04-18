@@ -1,6 +1,8 @@
 import { CreateUser, LoginRequest } from "../types/user.types";
 import { userRepository } from "../repositories/user.repository";
 import { get } from "http";
+import { JwtUtil } from "../utils/jwt.util";
+import { TokenInfo } from "../types/token.types";
 
 const bcrypt = require("bcrypt");
 
@@ -59,7 +61,11 @@ export const userService = {
         };
       }
 
-      const token = await user.getSignedJwtToken();
+      const payload: TokenInfo = {
+        user_id: user._id,
+        username: user.username,
+      };
+      const token = await JwtUtil.signToken(payload);
       return {
         success: true,
         message: "User logged in",
