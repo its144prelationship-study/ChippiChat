@@ -3,9 +3,11 @@ import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePic
 import MemberListComponent from "./MemberListComponent";
 import CancelButton from "../../../common/components/Button/CancelButton/CancelButton";
 import ConfirmButton from "../../../common/components/Button/ConfirmButton/ConfirmButton";
+import SelectGroupPictureModal from "./SelectGroupPictureModal";
 
 export default function CreateGroupModal() {
   const [groupName, setGroupName] = useState<string>("");
+  const [selectGroupPicture, setSelectGroupPicture] = useState<boolean>(false);
   // const [groupPicture, setGroupPicture] = useState<string>("14");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
@@ -43,45 +45,57 @@ export default function CreateGroupModal() {
   }, [groupName, selectedMembers]);
 
   return (
-    <div className="absolute min-h-4/5 w-fit bg-[#F7F7F7] z-20 font-dm-mono font-medium py-[2.5rem] px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col items-center gap-10">
-      <div className="flex flex-row gap-6 items-center min-w-[568px]">
-        <div>
-          <img src="../../../src/assets/edit-group-profile-icon.svg" className="absolute h-8 w-8 translate-x-[5.15rem] translate-y-[5.15rem]" />
-          <ProfilePicture className="h-[7rem] w-[7rem] border-[5px] border-cpc-blue rounded-full" pic="14" />
+    <>
+      {
+        selectGroupPicture &&
+        <div
+          className="absolute inset-0 bg-black bg-opacity-40 z-30"
+          onClick={() => {
+            setSelectGroupPicture(false);
+          }}
+        />
+      }
+      {selectGroupPicture && <SelectGroupPictureModal />}
+      <div className="absolute min-h-4/5 w-fit bg-[#F7F7F7] z-20 font-dm-mono font-medium py-[2.5rem] px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col items-center gap-10">
+        <div className="flex flex-row gap-6 items-center min-w-[568px]">
+          <div onClick={() => setSelectGroupPicture(true)}>
+            <img src="../../../src/assets/edit-group-profile-icon.svg" className="absolute h-8 w-8 translate-x-[5.15rem] translate-y-[5.15rem]" />
+            <ProfilePicture className="h-[7rem] w-[7rem] border-[5px] border-cpc-blue rounded-full" pic="14" />
+          </div>
+          <div className="flex flex-row h-[5.5rem]">
+            <span className="text-xl text-black mt-7">Group name:</span>
+            <input className="w-72 rounded-xl my-auto ml-3 pl-3 py-4 font-light text-base items-center placeholder-[#B0B0B0] inner-shadow-4 bg-cpc-gray"
+              type="text"
+              placeholder="Enter Your Group Name"
+              spellCheck={false}
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="flex flex-row h-[5.5rem]">
-          <span className="text-xl text-black mt-7">Group name:</span>
-          <input className="w-72 rounded-xl my-auto ml-3 pl-3 py-4 font-light text-base items-center placeholder-[#B0B0B0] inner-shadow-4 bg-cpc-gray"
-            type="text"
-            placeholder="Enter Your Group Name"
-            spellCheck={false}
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
+        <div className="h-[320px] w-fit rounded-xl pt-5 px-4 py-2 border-2 border-black/20 overflow-y-auto scrollbar-none">
+          <div className="flex flex-col gap-1">
+            {onlineUsers.map((user, index) => (
+              <MemberListComponent
+                key={index}
+                user_id={user.user_id}
+                username={user.username}
+                profile_picture={user.profile_picture}
+                selected={selectedMembers.includes(user.user_id)}
+                onMemberClick={() => handleMemberSelection(user.user_id)}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-row gap-8 select-none">
+          <CancelButton
+            onCancel={() => { }}
+          />
+          <ConfirmButton
+            onConfirm={() => { }}
           />
         </div>
       </div>
-      <div className="h-[320px] w-fit rounded-xl pt-5 px-4 py-2 border-2 border-black/20 overflow-y-auto scrollbar-none">
-        <div className="flex flex-col gap-1">
-          {onlineUsers.map((user, index) => (
-            <MemberListComponent
-              key={index}
-              user_id={user.user_id}
-              username={user.username}
-              profile_picture={user.profile_picture}
-              selected={selectedMembers.includes(user.user_id)}
-              onMemberClick={() => handleMemberSelection(user.user_id)}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="flex flex-row gap-8 select-none">
-        <CancelButton
-          onCancel={() => { }}
-        />
-        <ConfirmButton
-          onConfirm={() => { }}
-        />
-      </div>
-    </div>
+    </>
   );
 }
