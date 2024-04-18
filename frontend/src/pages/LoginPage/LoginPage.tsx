@@ -102,7 +102,7 @@ export default function LoginPage() {
               </a>
             </span>
             <div
-              className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer border rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"
+              className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"
               onClick={() => login()}
             >
               LOG IN

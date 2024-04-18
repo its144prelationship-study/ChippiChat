@@ -30,6 +30,13 @@ export default {
         ".inner-shadow-4": {
           boxShadow: "inset 4px 4px 4px rgba(0, 0, 0, 0.25)",
         },
+        ".scrollbar-none": {
+          "-ms-overflow-style": "none", /* Internet Explorer and Edge */
+          "scrollbar-width": "none", /* Firefox */
+        },
+        ".scrollbar-none::-webkit-scrollbar": {
+          display: "none", /* Chrome, Safari, and Opera */
+        },
       };
 
       addUtilities(newUtilities, ["responsive", "hover"]);
