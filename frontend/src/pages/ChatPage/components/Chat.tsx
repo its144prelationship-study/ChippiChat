@@ -9,7 +9,7 @@ export default function Chat({
   chatColor: string;
   setChangeColor: (changeColor: boolean) => void;
   selectedChat: string;
-  chatInfo: ChatListType;
+  chatInfo: ChatListType | null;
   groupMembers: GroupMemberType[];
   chatMessages: ChatMessageType[];
 }) {

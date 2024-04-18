@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
 import Rings from "../../assets/rings.svg";
+import CreateGroupModal from "./components/CreateGroupModal";
 
 export default function ChatPage() {
   const [selectedChat, setSelectedChat] = useState("1");
@@ -202,6 +203,7 @@ export default function ChatPage() {
           }}
         />
       )}
+      {createGroup && <CreateGroupModal />}
       <div className="flex flex-row">
         <img
           src={Rings}
@@ -219,7 +221,7 @@ export default function ChatPage() {
           chatColor={chatColor}
           setChangeColor={setChangeColor}
           selectedChat={selectedChat}
-          chatInfo={chatLists.find(chat => chat.id === selectedChat)}
+          chatInfo={chatLists.find((chat) => chat.id === selectedChat) ?? null}
           groupMembers={groupMembers}
           chatMessages={chatMessages}
         />
