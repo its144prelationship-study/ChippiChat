@@ -41,6 +41,24 @@ export const userService = {
       };
     }
   },
+    validateUsername: async (username: string) => {
+    try {
+      const user = await userRepository.findUser(null, username);
+      if (!user) {
+        return { success: true, code: 404, message: "User not found" };
+      }
+      return {
+        success: true,
+        message: `Found a user with the username ${username}`,
+        data: {
+          username: user.username,
+        },
+      };
+    } catch (err) {
+      console.error(err.message);
+      return { success: false, code: 500, message: "Internal server error" };
+    }
+  },
   login: async (body: LoginRequest) => {
     try {
       const user = await userRepository.findUser(null, body.username);

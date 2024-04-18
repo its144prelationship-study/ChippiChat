@@ -11,6 +11,9 @@ export default {
         "cpc-light-gray": "#F7F7F7",
         "cpc-gray": "#D9D9D9",
         "cpc-orange": "#FF994E",
+        "cpc-salmon-red": "#EA5F41",
+        "cpc-verylight-gray": "#B0B0B0",
+        "cpc-dark-red": "#C14D33"
       },
       fontFamily: {
         "dm-mono": ["DM Mono", "monospace"],

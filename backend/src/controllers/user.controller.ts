@@ -59,6 +59,38 @@ export const userController = {
       });
     }
   },
+    validateUsername: async (req: Request, res: Response) => {
+    try {
+      if (!req.params.username) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Username is required" });
+      }
+      const user = await userService.validateUsername(req.params.username);
+      if (user.success) {
+        if (!user.data) {
+          return res
+            .status(200)
+            .json({ success: true, message: "User not found" });
+        } else {
+          return res.status(200).json({
+            success: true,
+            message: `Found a user with the username ${user.data.username}`,
+            data: { username: user.data.username },
+          });
+        }
+      } else {
+        return res
+          .status(user.code)
+          .json({ success: false, message: user.message });
+      }
+    } catch (err) {
+      console.error(err.message);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  },
   logout: async (req: Request, res: Response) => {
     try {
       res.cookie("token", "none", {
