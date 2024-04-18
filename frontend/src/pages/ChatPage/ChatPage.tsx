@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
 import CreateGroupModal from "./components/CreateGroupModal";
+import SelectedChatColorModal from "./components/SelectedChatColorModal";
 
 export default function ChatPage() {
   const [selectedChat, setSelectedChat] = useState("1");
@@ -206,6 +207,13 @@ export default function ChatPage() {
         />
       )}
       {createGroup && <CreateGroupModal />}
+      {changeColor && (
+        <SelectedChatColorModal
+          chatColor={chatColor}
+          setChatColor={setChatColor}
+          setChangeColor={setChangeColor}
+        />
+      )}
       <div className="flex flex-row">
         <ChatLists
           chatLists={chatLists}
