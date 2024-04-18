@@ -9,7 +9,7 @@ export default function ModalOverlay({
 }) {
   return (
     <div
-      className={`fixed top-0 left-0 w-[100%] h-[100vh] justify-center items-center ${
+      className={`fixed top-0 left-0 w-[100%] h-[100vh] justify-center items-center z-[1000] ${
         isVisible ? "flex" : "hidden"
       }`}
     >
