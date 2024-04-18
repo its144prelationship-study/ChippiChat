@@ -6,4 +6,10 @@ export interface LoginRequest {
 export interface CreateUser {
     username: string;
     password: string;
+    profile_picture: string;
+}
+
+export interface UpdateUser {
+    username: string;
+    profile_picture: string;
 }

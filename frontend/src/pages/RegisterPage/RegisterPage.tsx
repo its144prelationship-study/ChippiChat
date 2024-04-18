@@ -10,7 +10,7 @@ export default function RegisterPage() {
         style={{ boxShadow: "4px 4px 5px 0 rgba(0, 0, 0, 0.25)" }}
         className="bg-cpc-light-gray p-8 rounded-md bg-opacity-90"
       >
-        <InputForm />
+        <InputForm formType={"CREATE"}/>
       </div>
       <div
         style={{ textShadow: "2px 2px 1px rgba(0, 0, 0, 0.25)" }}

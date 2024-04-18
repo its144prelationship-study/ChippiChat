@@ -1,7 +1,19 @@
 import { useState } from "react";
 import OnlineUser from "./components/OnlineUser";
 import NavBar from "../../common/components/NavBar/NavBar";
+import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
+import { OriInfo } from "../RegisterPage/components/InputForm";
 export default function SearchPage() {
+  const username = LocalStorageUtils.getData("username");
+  const profilePic = LocalStorageUtils.getData("profile_picture");
+  const userId = LocalStorageUtils.getData("userId");
+
+  const user: OriInfo = {
+    username: username ? username : "",
+    profile_picture: profilePic ? profilePic : "1",
+    userId: userId ? userId : "",
+  };
+
   const [state, setState] = useState("whisper");
   const onlineUsers = [
     {
@@ -48,7 +60,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <NavBar menuFocus={"search"} username={"Chippi Chappa"} />
+      <NavBar menuFocus={"search"} user={user} />
       <main className="w-full min-h-[100vh] bg-cpc-blue">
         <div className="h-full flex justify-center items-center flex-col py-5">
           <h1 className="font-dm-mono font-normal text-4xl text-white [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25">
