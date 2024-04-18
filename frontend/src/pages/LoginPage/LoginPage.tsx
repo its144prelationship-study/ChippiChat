@@ -42,6 +42,9 @@ export default function LoginPage() {
     };
 
     socket.emit("addOnlineUser", user);
+    LocalStorageUtils.setData("username", response.data.username);
+    LocalStorageUtils.setData("profile_picture",response.data.profile_picture);
+    LocalStorageUtils.setData("userId",response.data._id);
 
     window.location.href = "/search";
   };

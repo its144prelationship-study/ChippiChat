@@ -59,7 +59,37 @@ export const userController = {
       });
     }
   },
-    validateUsername: async (req: Request, res: Response) => {
+  updateUser: async (req: Request, res: Response) => {
+    try {
+      if (!req.params.userId) {
+        return res
+          .status(400)
+          .json({ success: false, message: "UserID is required" });
+      }
+
+      if (!req.body.username) {
+        return res.status(400).json({
+          success: false,
+          message: "Username is required",
+        });
+      }
+      const user = await userService.updateUsr(req.params.userId, req.body);
+      if (user.success) {
+        res.status(201).json(user);
+      } else {
+        res.status(user.code).json({
+          success: false,
+          message: user.message,
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  },
+  validateUsername: async (req: Request, res: Response) => {
     try {
       if (!req.params.username) {
         return res

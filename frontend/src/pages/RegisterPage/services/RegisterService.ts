@@ -1,4 +1,4 @@
-import { RegisterSchema } from "../types/RegisterType";
+import { RegisterSchema, UpdateUserSchema } from "../types/RegisterType";
 
 export const RegisterService = {
     validateUsername: async (username:string) => {
@@ -20,5 +20,15 @@ export const RegisterService = {
 		}
 		});
 		return response.json();
+    },
+    updateUser: async (updateUserInfo : UpdateUserSchema,userId : string) => {
+        const response = await fetch(`http://localhost:5789/api/user/${userId}`,{
+            method: "PUT",
+            body: JSON.stringify(updateUserInfo),
+		    headers: {
+			    "Content-Type": "application/json"
+		    }
+        })
+        return response.json();
     }
 }

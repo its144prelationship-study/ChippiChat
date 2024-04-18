@@ -1,4 +1,4 @@
-import { CreateUser, LoginRequest } from "../types/user.types";
+import { CreateUser, LoginRequest, UpdateUser } from "../types/user.types";
 import { userRepository } from "../repositories/user.repository";
 import { get } from "http";
 import { JwtUtil } from "../utils/jwt.util";
@@ -41,7 +41,19 @@ export const userService = {
       };
     }
   },
-    validateUsername: async (username: string) => {
+  updateUsr: async (user_id: string, body: UpdateUser) => {
+    try {
+      const user = await userRepository.updateUser(user_id, body);
+      if (!user) {
+        return { success: false, code: 400, message: "Cannot update user" };
+      }
+      return { success: true, code: 200, data: user };
+    } catch (err) {
+      console.error(err.message);
+      return { success: false, code: 500, message: "Internal server error" };
+    }
+  },
+  validateUsername: async (username: string) => {
     try {
       const user = await userRepository.findUser(null, username);
       if (!user) {
@@ -91,6 +103,8 @@ export const userService = {
           user_id: user._id,
           username: user.username,
           token: token,
+          profile_picture: user.profile_picture,
+          _id: user._id,
         },
       };
     } catch (err) {

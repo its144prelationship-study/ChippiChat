@@ -4,6 +4,10 @@ import ChatLists from "./components/ChatLists";
 import CreateGroupModal from "./components/CreateGroupModal";
 import SelectedChatColorModal from "./components/SelectedChatColorModal";
 
+import NavBar from "../../common/components/NavBar/NavBar";
+import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
+import { OriInfo } from "../RegisterPage/components/InputForm";
+
 export default function ChatPage() {
   const [selectedChat, setSelectedChat] = useState("1");
   const [createGroup, setCreateGroup] = useState(false);
@@ -136,7 +140,8 @@ export default function ChatPage() {
     },
     {
       id: "11",
-      message: "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
+      message:
+        "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
       timestamp: "2024-04-16 11:01",
     },
     {
@@ -195,8 +200,18 @@ export default function ChatPage() {
       }
     }
   }, [selectedChat, chatColor]);
+  const username = LocalStorageUtils.getData("username");
+  const profilePic = LocalStorageUtils.getData("profile_picture");
+  const userId = LocalStorageUtils.getData("userId");
+
+  const user: OriInfo = {
+    username: username ? username : "",
+    profile_picture: profilePic ? profilePic : "1",
+    userId: userId ? userId : "",
+  };
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
+      <NavBar menuFocus="chat" user={user} />
       {(createGroup || changeColor) && (
         <div
           className="absolute inset-0 bg-black bg-opacity-40 z-10"
