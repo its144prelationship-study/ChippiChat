@@ -21,10 +21,10 @@ export const getPagesData = () =>
   },
   {
     path: "/search",
-    element: <SearchPage />,
+    element: <AuthProvider><SearchPage /></AuthProvider>,
   },
   {
     path: "/chat",
-    element: <ChatPage />,
+    element: <AuthProvider><ChatPage /></AuthProvider>,
   },
   ] as unknown as RouteProps[];
