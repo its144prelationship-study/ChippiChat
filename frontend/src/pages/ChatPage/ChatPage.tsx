@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
-import Rings from "../../assets/rings.svg";
 import CreateGroupModal from "./components/CreateGroupModal";
 
 export default function ChatPage() {
@@ -9,6 +8,7 @@ export default function ChatPage() {
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
   const [chatColor, setChatColor] = useState("orange");
+  const [isPinned, setIsPinned] = useState(false);
   const chatLists: ChatListType[] = [
     {
       id: "1",
@@ -38,7 +38,7 @@ export default function ChatPage() {
     },
     {
       id: "3",
-      chatname: "KanomKaiiiiiiiiii",
+      chatname: "KanomKaiiiiiiiiiiiiiiiiiiiiiiiii",
       last_message: "เอาไปเลย",
       last_message_time: "2024-04-10 12:00",
       unread: 0,
@@ -129,12 +129,13 @@ export default function ChatPage() {
   const chatGroupMessages = [
     {
       id: "00",
-      message: "hihihihihihihihihihihihi",
+      message:
+        "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
       timestamp: "2024-04-16 11:00",
     },
     {
       id: "11",
-      message: "hihihihihihihihihihihihi",
+      message: "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
       timestamp: "2024-04-16 11:01",
     },
     {
@@ -160,34 +161,35 @@ export default function ChatPage() {
     {
       id: "11",
       message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
+      timestamp: "2024-04-17 11:03",
     },
 
     {
       id: "00",
       message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
+      timestamp: "2024-04-17 11:03",
     },
     {
       id: "11",
       message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
+      timestamp: "2024-04-18 11:03",
     },
     {
       id: "00",
       message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:04",
+      timestamp: "2024-04-18 11:04",
     },
     {
       id: "11",
       message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:04",
+      timestamp: "2024-04-18 11:04",
     },
   ];
   useEffect(() => {
     for (let i = 0; i < chatLists.length; i++) {
       if (chatLists[i].id === selectedChat) {
         setChatColor(chatLists[i].bg_color);
+        setIsPinned(chatLists[i].is_pinned);
         break;
       }
     }
@@ -205,11 +207,6 @@ export default function ChatPage() {
       )}
       {createGroup && <CreateGroupModal />}
       <div className="flex flex-row">
-        <img
-          src={Rings}
-          alt="rings"
-          className="absolute w-[6.2rem] translate-x-[32rem] translate-y-[10rem]"
-        />
         <ChatLists
           chatLists={chatLists}
           setCreateGroup={setCreateGroup}
@@ -223,7 +220,10 @@ export default function ChatPage() {
           selectedChat={selectedChat}
           chatInfo={chatLists.find((chat) => chat.id === selectedChat) ?? null}
           groupMembers={groupMembers}
-          chatMessages={chatMessages}
+          chatMessages={chatGroupMessages}
+          isPinned={isPinned}
+          setIsPinned={setIsPinned}
+          userId={currentId}
         />
       </div>
     </main>
