@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Chat from "./components/Chat";
 import ChatLists from "./components/ChatLists";
 import CreateGroupModal from "./components/CreateGroupModal";
 import SelectedChatColorModal from "./components/SelectedChatColorModal";
-
 import NavBar from "../../common/components/NavBar/NavBar";
-import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import { OriInfo } from "../RegisterPage/components/InputForm";
+import { AuthContext } from "../../common/context/AuthContext";
 
 export default function ChatPage() {
+  const user: OriInfo = useContext(AuthContext);
   const [selectedChat, setSelectedChat] = useState("1");
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
@@ -200,15 +200,6 @@ export default function ChatPage() {
       }
     }
   }, [selectedChat, chatColor]);
-  const username = LocalStorageUtils.getData("username");
-  const profilePic = LocalStorageUtils.getData("profile_picture");
-  const userId = LocalStorageUtils.getData("userId");
-
-  const user: OriInfo = {
-    username: username ? username : "",
-    profile_picture: profilePic ? profilePic : "1",
-    userId: userId ? userId : "",
-  };
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />

@@ -1,19 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import OnlineUser from "./components/OnlineUser";
 import NavBar from "../../common/components/NavBar/NavBar";
-import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import { OriInfo } from "../RegisterPage/components/InputForm";
+import { AuthContext } from "../../common/context/AuthContext";
 export default function SearchPage() {
-  const username = LocalStorageUtils.getData("username");
-  const profilePic = LocalStorageUtils.getData("profile_picture");
-  const userId = LocalStorageUtils.getData("userId");
-
-  const user: OriInfo = {
-    username: username ? username : "",
-    profile_picture: profilePic ? profilePic : "1",
-    userId: userId ? userId : "",
-  };
-
+  const user:OriInfo = useContext(AuthContext);
   const [state, setState] = useState("whisper");
   const onlineUsers = [
     {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CancelButton from "../../../common/components/Button/CancelButton/CancelButton";
 import ConfirmButton from "../../../common/components/Button/ConfirmButton/ConfirmButton";
 import InputText from "../../../common/components/Input/InputText";
@@ -7,13 +7,12 @@ import ConfirmModal from "./ConfirmModal";
 import PicChooser from "../../../common/components/PicChooser/PicChooser";
 import { RegisterService } from "../services/RegisterService";
 import { RegisterSchema, UpdateUserSchema } from "../types/RegisterType";
-import { LocalStorageUtils } from "../../../common/utils/LocalStorageUtil";
 
 export type FormType = "CREATE" | "UPDATE";
 export interface OriInfo {
   username: string;
   profile_picture: string;
-  userId: string;
+  user_id: string;
 }
 
 export default function InputForm({
@@ -38,6 +37,13 @@ export default function InputForm({
   const tempPassword = "*".repeat(password.length);
   const tempPassword2 = "*".repeat(password2.length);
   const pics: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+  useEffect(() => {
+    if (oriInfo) {
+      setUsername(oriInfo.username);
+      setProfilePic(oriInfo.profile_picture);
+    }
+  }, [oriInfo]);
 
   const onChangePassword = (value: string, mode: string) => {
     let tmppass;
@@ -83,8 +89,8 @@ export default function InputForm({
       username: username,
       profile_picture: profilePic,
     };
-    const userId = oriInfo ? oriInfo.userId : "";
-    const response = await RegisterService.updateUser(updateUserInfo, userId);
+    const user_id = oriInfo ? oriInfo.user_id : "";
+    const response = await RegisterService.updateUser(updateUserInfo, user_id);
     return response.data;
   };
 
@@ -229,11 +235,6 @@ export default function InputForm({
           } else {
             const data = await editProfile();
             if (data) {
-              LocalStorageUtils.setData("username", data.username);
-              LocalStorageUtils.setData(
-                "profile_picture",
-                data.profile_picture
-              );
               window.location.reload();
             } else {
               alert("Cannot Update User");
