@@ -1,5 +1,18 @@
 import { CreateMessageRequest } from "../types/message.types";
 import { messageRepository } from "../repositories/message.repository";
+import { timeStamp } from "console";
+
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+  const formattedTime = `${date.getHours().toString().padStart(2, "0")}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
+  return `${formattedDate} ${formattedTime}`;
+}
 
 export const messageService = {
   createMessage: async (body: CreateMessageRequest) => {
@@ -30,9 +43,14 @@ export const messageService = {
   getMessages: async (chatId: string) => {
     try {
       const messages = await messageRepository.getMessages(chatId);
+      const mappedMessages = messages.map((message) => ({
+        id: message.sender_id,
+        message: message.message_text,
+        timestamp: formatTimestamp(message.send_at),
+      }));
       return {
         success: true,
-        data: messages,
+        data: mappedMessages,
       };
     } catch (err) {
       console.error(err.message);

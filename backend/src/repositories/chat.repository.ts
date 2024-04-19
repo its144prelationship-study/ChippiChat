@@ -1,6 +1,7 @@
 import { CreateChatRequest } from "../types/chat.types";
 
 const Chat = require("../models/ChatModel");
+const User = require("../models/UserModel");
 
 export const chatRepository = {
   createChat: async (body: CreateChatRequest) => {
@@ -66,6 +67,26 @@ export const chatRepository = {
         { $pull: { participants: userId } },
         { new: true }
       );
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  getGroupMembers: async (chatId: string) => {
+    try {
+      const chat = await Chat.findById(chatId);
+      if (chat) {
+        const members = await User.find({ _id: { $in: chat.participants } });
+        const groupMembers = members.map((member) => ({
+          id: member._id,
+          name: member.username,
+          profile_picture: member.profile_picture,
+        }));
+        console.log(groupMembers);
+        return groupMembers;
+      } else {
+        return null;
+      }
     } catch (error) {
       console.error(error);
       return null;

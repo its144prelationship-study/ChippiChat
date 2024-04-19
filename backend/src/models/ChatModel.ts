@@ -14,11 +14,26 @@ const ChatSchema = new mongoose.Schema({
   },
   group_picture: {
     type: String,
-    enum: ["11", "12", "13", "14"],
+    enum: [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+    ],
   },
   background_color: {
     type: String,
-    enum: ["ORANGE", "GREEN", "YELLOW", "PURPLE", "PINK"],
+    enum: ["orange", "green", "yellow", "purple", "pink"],
   },
   update_at: {
     type: Date,

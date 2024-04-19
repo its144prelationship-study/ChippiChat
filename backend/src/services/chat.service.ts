@@ -38,9 +38,21 @@ export const chatService = {
   getAllChats: async (userId: string) => {
     try {
       const chats = await chatRepository.getAllChats(userId);
+      const mappedChats = chats.map((chat) => ({
+        id: chat._id,
+        chatname: chat.group_name,
+        last_message: "เอาไปเลย",
+        last_message_time: "2024-04-10 12:00",
+        unread: 0,
+        is_pinned: false,
+        profile_picture: chat.group_picture,
+        is_group: chat.is_group,
+        members: chat.participants.length,
+        bg_color: chat.background_color,
+      }));
       return {
         success: true,
-        data: chats,
+        data: mappedChats,
       };
     } catch (err) {
       console.error(err.message);
@@ -122,6 +134,30 @@ export const chatService = {
           success: false,
           code: 500,
           message: "Cannot leave chat",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
+  getGroupMembers: async (chatId: string) => {
+    try {
+      const members = await chatRepository.getGroupMembers(chatId);
+      if (members) {
+        return {
+          success: true,
+          data: members,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot get members",
         };
       }
     } catch (err) {

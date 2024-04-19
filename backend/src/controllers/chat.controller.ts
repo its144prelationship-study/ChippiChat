@@ -124,4 +124,21 @@ export const chatController = {
       });
     }
   },
+  getGroupMembers: async (req, res) => {
+    try {
+      if (!req.params.chatId) {
+        return res.status(400).json({
+          success: false,
+          message: "Chat ID is required",
+        });
+      }
+      const members = await chatService.getGroupMembers(req.params.chatId);
+      res.status(200).json(members);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
 };
