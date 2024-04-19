@@ -8,7 +8,7 @@ import SelectGroupPictureModal from "./SelectGroupPictureModal";
 export default function CreateGroupModal() {
   const [groupName, setGroupName] = useState<string>("");
   const [selectGroupPicture, setSelectGroupPicture] = useState<boolean>(false);
-  // const [groupPicture, setGroupPicture] = useState<string>("14");
+  const [groupPicture, setGroupPicture] = useState<string>("11");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
   const onlineUsers = [
@@ -40,9 +40,9 @@ export default function CreateGroupModal() {
 
   useEffect(() => {
     console.log("GroupName:", groupName);
-    // console.log("GroupPicture:", groupPicture);
+    console.log("GroupPicture:", groupPicture);
     console.log("SelectedMembers:", selectedMembers);
-  }, [groupName, selectedMembers]);
+  }, [groupName, groupPicture, selectedMembers]);
 
   return (
     <>
@@ -55,12 +55,17 @@ export default function CreateGroupModal() {
           }}
         />
       }
-      {selectGroupPicture && <SelectGroupPictureModal />}
-      <div className="absolute min-h-4/5 w-fit bg-[#F7F7F7] z-20 font-dm-mono font-medium py-[2.5rem] px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col items-center gap-10">
+      {selectGroupPicture && <SelectGroupPictureModal
+        props={{
+          setSelectGroupPicture: setSelectGroupPicture,
+          setGroupPicture: setGroupPicture
+        }}
+      />}
+      <div className="absolute min-h-4/5 w-fit bg-[#F7F7F7] z-20 font-dm-mono font-medium py-[2.5rem] px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl drop-shadow-[4px_4px_5px_rgba(0,0,0,0.25)] flex flex-col items-center gap-10">
         <div className="flex flex-row gap-6 items-center min-w-[568px]">
-          <div onClick={() => setSelectGroupPicture(true)}>
+          <div className="cursor-pointer hover:drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onClick={() => setSelectGroupPicture(true)}>
             <img src="../../../src/assets/edit-group-profile-icon.svg" className="absolute h-8 w-8 translate-x-[5.15rem] translate-y-[5.15rem]" />
-            <ProfilePicture className="h-[7rem] w-[7rem] border-[5px] border-cpc-blue rounded-full" pic="14" />
+            <ProfilePicture className="h-[7rem] w-[7rem] border-[5px] border-cpc-blue rounded-full" pic={groupPicture} />
           </div>
           <div className="flex flex-row h-[5.5rem]">
             <span className="text-xl text-black mt-7">Group name:</span>
