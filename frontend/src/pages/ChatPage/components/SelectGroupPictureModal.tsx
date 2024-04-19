@@ -1,4 +1,5 @@
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture";
+import { SelectGroupPictureType } from "../types/SelectGroupPictureType";
 
 export default function SelectGroupPictureModal({ props }: { props: SelectGroupPictureType }) {
     const groupPictures = ["11", "12", "13", "14"];

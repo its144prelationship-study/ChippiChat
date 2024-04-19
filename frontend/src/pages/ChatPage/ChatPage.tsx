@@ -26,7 +26,7 @@ export default function ChatPage() {
       is_group: false,
       members: 2,
       bg_color: "orange",
-      onChatClick: () => {},
+      onChatClick: () => { },
     },
     {
       id: "2",
@@ -39,7 +39,7 @@ export default function ChatPage() {
       is_group: false,
       members: 2,
       bg_color: "pink",
-      onChatClick: () => {},
+      onChatClick: () => { },
     },
     {
       id: "3",
@@ -52,7 +52,7 @@ export default function ChatPage() {
       is_group: true,
       members: 3,
       bg_color: "yellow",
-      onChatClick: () => {},
+      onChatClick: () => { },
     },
   ];
   const currentId = "00";
@@ -221,7 +221,9 @@ export default function ChatPage() {
           }}
         />
       )}
-      {createGroup && <CreateGroupModal />}
+      {createGroup && <CreateGroupModal
+        setCreateGroup={setCreateGroup}
+      />}
       {changeColor && (
         <SelectedChatColorModal
           chatColor={chatColor}

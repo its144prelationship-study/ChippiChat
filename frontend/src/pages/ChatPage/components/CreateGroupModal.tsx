@@ -5,8 +5,9 @@ import CancelButton from "../../../common/components/Button/CancelButton/CancelB
 import ConfirmButton from "../../../common/components/Button/ConfirmButton/ConfirmButton";
 import SelectGroupPictureModal from "./SelectGroupPictureModal";
 
-export default function CreateGroupModal() {
+export default function CreateGroupModal(props: { setCreateGroup: (createGroup: boolean) => void }) {
   const [groupName, setGroupName] = useState<string>("");
+  const [hasGroupName, setHasGroupName] = useState<boolean>(true);
   const [selectGroupPicture, setSelectGroupPicture] = useState<boolean>(false);
   const [groupPicture, setGroupPicture] = useState<string>("11");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
@@ -28,6 +29,13 @@ export default function CreateGroupModal() {
     { user_id: "14", username: "Ploy Ploy", profile_picture: "9" },
   ]
 
+  const handleChangeGroupName = (value: string) => {
+    setGroupName(value);
+    if (value !== "") {
+      setHasGroupName(true);
+    }
+  };
+
   const handleMemberSelection = (user_id: string) => {
     setSelectedMembers((prevSelectedMembers) => {
       if (prevSelectedMembers.includes(user_id)) {
@@ -36,6 +44,19 @@ export default function CreateGroupModal() {
         return [...prevSelectedMembers, user_id];
       }
     });
+  };
+
+  const handleCreateGroup = () => {
+    if (groupName === "") {
+      setHasGroupName(false);
+      return;
+    }
+
+    console.log("Create Group");
+    console.log("Group Name:", groupName);
+    console.log("Group Picture:", groupPicture);
+    console.log("Selected Members:", selectedMembers);
+    props.setCreateGroup(false);
   };
 
   useEffect(() => {
@@ -63,18 +84,18 @@ export default function CreateGroupModal() {
       />}
       <div className="absolute min-h-4/5 w-fit bg-[#F7F7F7] z-20 font-dm-mono font-medium py-[2.5rem] px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl drop-shadow-[4px_4px_5px_rgba(0,0,0,0.25)] flex flex-col items-center gap-10">
         <div className="flex flex-row gap-6 items-center min-w-[568px]">
-          <div className="cursor-pointer hover:drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onClick={() => setSelectGroupPicture(true)}>
+          <div className="cursor-pointer hover:drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] select-none" onClick={() => setSelectGroupPicture(true)}>
             <img src="../../../src/assets/edit-group-profile-icon.svg" className="absolute h-8 w-8 translate-x-[5.15rem] translate-y-[5.15rem]" />
             <ProfilePicture className="h-[7rem] w-[7rem] border-[5px] border-cpc-blue rounded-full" pic={groupPicture} />
           </div>
           <div className="flex flex-row h-[5.5rem]">
             <span className="text-xl text-black mt-7">Group name:</span>
-            <input className="w-72 rounded-xl my-auto ml-3 pl-3 py-4 font-light text-base items-center placeholder-[#B0B0B0] inner-shadow-4 bg-cpc-gray"
+            <input className={`w-72 rounded-xl my-auto ml-3 pl-3 py-4 font-light text-base items-center inner-shadow-4 ${hasGroupName ? "bg-cpc-gray placeholder-cpc-verylight-gray" : "bg-[#FF9F9F] placeholder-cpc-salmon-red"}`}
               type="text"
               placeholder="Enter Your Group Name"
               spellCheck={false}
               value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
+              onChange={(e) => handleChangeGroupName(e.target.value)}
             />
           </div>
         </div>
@@ -83,9 +104,7 @@ export default function CreateGroupModal() {
             {onlineUsers.map((user, index) => (
               <MemberListComponent
                 key={index}
-                user_id={user.user_id}
-                username={user.username}
-                profile_picture={user.profile_picture}
+                {...user}
                 selected={selectedMembers.includes(user.user_id)}
                 onMemberClick={() => handleMemberSelection(user.user_id)}
               />
@@ -94,10 +113,10 @@ export default function CreateGroupModal() {
         </div>
         <div className="flex flex-row gap-8 select-none">
           <CancelButton
-            onCancel={() => { }}
+            onCancel={() => { props.setCreateGroup(false) }}
           />
           <ConfirmButton
-            onConfirm={() => { }}
+            onConfirm={handleCreateGroup}
           />
         </div>
       </div>
