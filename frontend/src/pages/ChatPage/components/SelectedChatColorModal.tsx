@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CloseIcon from "../../../assets/close-icon.svg";
 import PixelHeart from "../../../assets/pixel-heart.svg";
 export default function SelectedChatColorModal({
@@ -16,16 +17,20 @@ export default function SelectedChatColorModal({
     ["green", "bg-[#A2D92E]"],
     ["yellow", "bg-[#FFFA7C]"],
   ];
+  const [hovered, setHovered] = useState("");
   const allColors = () => {
     return colors.map((color) => (
       <div
         key={colors.indexOf(color)}
-        className={`w-[7.5rem] h-[7.5rem] rounded-full cursor-pointer ${color[1]} flex justify-center items-center shadow-[4px_4px_4px_0px_rgb(0,0,0,.25)] hover:scale-[1.02] `}
+        className={`w-[7.5rem] h-[7.5rem] rounded-full cursor-pointer ${color[1]} flex justify-center items-center ${chatColor === color[0] ? "shadow-[0px_0px_20px_0px_rgb(0,0,0,.4)]" : "shadow-[0px_0px_1px_0px_rgb(0,0,0,.25)]"}`}
         onClick={() => {
           setChatColor(color[0]);
+          setChangeColor(false);
         }}
+        onMouseEnter={() => setHovered(color[0])}
+        onMouseLeave={() => setHovered("")}
       >
-        {chatColor === color[0] && (
+        {hovered === color[0] && (
           <img src={PixelHeart} alt="selected" className="w-20 h-20" />
         )}
       </div>

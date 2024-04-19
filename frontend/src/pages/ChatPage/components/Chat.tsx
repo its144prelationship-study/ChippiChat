@@ -142,7 +142,7 @@ export default function Chat({
   return (
     <div className="flex flex-row">
       <div
-        className={`w-[60rem] h-[40rem] my-10 mr-16 ml-5 ${bgColor} rounded-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)]`}
+        className={`w-[60rem] h-[40rem] my-5 mr-16 ml-5 ${bgColor} rounded-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)]`}
       >
         <div
           className={`w-full h-[4.5rem] ${bgTopColor} rounded-t-md shadow-[inset_2px_2px_6px_0px_rgba(0,0,0,0.25)] flex flex-row p-2 justify-items-center justify-between items-center px-4`}
