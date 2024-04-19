@@ -144,11 +144,8 @@ export const userController = {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const decoded = await JwtUtil.verifyToken(token);
-      const user = await userService.getUserById(decoded.user_id);
-      res.status(200).json({
-        success: true,
-        data: user,
-      });
+      const response = await userService.getUserById(decoded.user_id);
+      res.status(200).json(response);
     } catch (err) {
       console.error(err.message);
       res.status(500).json({

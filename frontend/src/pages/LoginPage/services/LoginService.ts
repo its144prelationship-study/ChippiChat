@@ -14,7 +14,6 @@ export const LoginService = {
 	},
 	logout: async () => {
 		LocalStorageUtils.removeData("token");
-		LocalStorageUtils.removeData("username");
 		window.location.href = "/login";
 	}
 }

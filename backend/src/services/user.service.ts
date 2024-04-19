@@ -92,19 +92,14 @@ export const userService = {
       }
 
       const payload: TokenInfo = {
-        user_id: user._id,
-        username: user.username,
+        user_id: user._id
       };
       const token = await JwtUtil.signToken(payload);
       return {
         success: true,
         message: "User logged in",
         data: {
-          user_id: user._id,
-          username: user.username,
           token: token,
-          profile_picture: user.profile_picture,
-          _id: user._id,
         },
       };
     } catch (err) {
