@@ -6,6 +6,7 @@ import SelectedChatColorModal from "./components/SelectedChatColorModal";
 import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
 import { AuthContext } from "../../common/context/AuthContext";
+import { ChatListType } from "./types/ChatListType";
 
 export default function ChatPage() {
   const user: OriInfo = useContext(AuthContext);
@@ -26,7 +27,7 @@ export default function ChatPage() {
       is_group: false,
       members: 2,
       bg_color: "orange",
-      onChatClick: () => { },
+      onChatClick: () => {},
     },
     {
       id: "2",
@@ -39,7 +40,7 @@ export default function ChatPage() {
       is_group: false,
       members: 2,
       bg_color: "pink",
-      onChatClick: () => { },
+      onChatClick: () => {},
     },
     {
       id: "3",
@@ -52,7 +53,7 @@ export default function ChatPage() {
       is_group: true,
       members: 3,
       bg_color: "yellow",
-      onChatClick: () => { },
+      onChatClick: () => {},
     },
   ];
   const currentId = "00";
@@ -212,9 +213,7 @@ export default function ChatPage() {
           }}
         />
       )}
-      {createGroup && <CreateGroupModal
-        setCreateGroup={setCreateGroup}
-      />}
+      {createGroup && <CreateGroupModal setCreateGroup={setCreateGroup} />}
       {changeColor && (
         <SelectedChatColorModal
           chatColor={chatColor}
