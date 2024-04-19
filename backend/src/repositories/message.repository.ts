@@ -20,4 +20,12 @@ export const messageRepository = {
       return null;
     }
   },
+  getLastMessage: async (chatId: string) => {
+    try {
+      return await Message.findOne({ chat_id: chatId }).sort({ send_at: -1 });
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
 };

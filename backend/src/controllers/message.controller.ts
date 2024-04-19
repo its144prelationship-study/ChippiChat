@@ -31,4 +31,15 @@ export const messageController = {
       });
     }
   },
+  getLastMessage: async (req: Request, res: Response) => {
+    try {
+      const message = await messageService.getLastMessage(req.params.chatId);
+      res.status(200).json(message);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
 };

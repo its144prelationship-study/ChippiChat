@@ -61,4 +61,32 @@ export const messageService = {
       };
     }
   },
+  getLastMessage: async (chatId: string) => {
+    try {
+      const message = await messageRepository.getLastMessage(chatId);
+      if (message) {
+        return {
+          success: true,
+          data: {
+            id: message.sender_id,
+            message: message.message_text,
+            timestamp: formatTimestamp(message.send_at),
+          },
+        };
+      } else {
+        return {
+          success: false,
+          code: 404,
+          message: "No messages found",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
 };
