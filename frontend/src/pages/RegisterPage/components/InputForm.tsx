@@ -245,6 +245,7 @@ export default function InputForm({
             }
           }
         }}
+        type={formType}
       />
     </div>
   );
