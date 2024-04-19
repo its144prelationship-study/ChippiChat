@@ -6,7 +6,7 @@ import { LocalStorageUtils } from "../utils/LocalStorageUtil";
 export const AuthContext = createContext<AuthContextType>({
     user_id: "",
     username: "",
-    token: "",
+    profile_picture: ""
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -16,8 +16,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
     }
 
-    const decodedToken = jwtDecode<Omit<AuthContextType, "token">>(token);
-    const contextValue = { ...decodedToken, token }
+    try {
+        const decodedToken = jwtDecode<AuthContextType>(token);
+        const contextValue = { ...decodedToken };
 
-    return (<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>);
+        return (<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>);
+    } catch (err) {
+        LocalStorageUtils.removeData("token");
+        window.location.href = "/login";
+        return;
+    }
 }
