@@ -32,4 +32,18 @@ export const ChatService = {
     );
     return response.json();
   },
+  sendMessage: async (chatId: string, message: string, senderId: string) => {
+    const response = await fetch(`http://localhost:5789/api/message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        sender_id: senderId,
+        message_text: message,
+      }),
+    });
+    return response.json();
+  },
 };

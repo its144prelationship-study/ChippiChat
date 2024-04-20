@@ -22,7 +22,11 @@ export const messageService = {
         return {
           success: true,
           message: "Message sent",
-          data: message,
+          data: {
+            id: message.sender_id,
+            message: message.message_text,
+            timestamp: formatTimestamp(message.send_at),
+          },
         };
       } else {
         return {

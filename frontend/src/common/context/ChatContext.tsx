@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import { OriInfo } from "../../pages/RegisterPage/components/InputForm";
 import { ChatListType } from "../../pages/ChatPage/types/ChatListType";
 import { ChatContextType } from "../types/ChatContextType";
@@ -55,12 +55,41 @@ export const ChatContextProvider = ({
       const response = await ChatService.getChatLists(user.user_id);
       const data = await response.json();
       if (data.success) {
-        setChatLists(data);
+        setChatLists(data.data);
       }
     };
     getChatLists();
     setCurrentId(user.user_id);
   }, [user]);
+
+  useEffect(() => {
+    const getMessages = async () => {
+      const response = await ChatService.getAllMessages(selectedChat);
+      const data = await response.json();
+      if (data.success) {
+        setChatGroupMessages(data.data);
+      }
+    };
+    getMessages();
+  }, [selectedChat]);
+
+  const updateSelectedChat = useCallback((chatId: string) => {
+    setSelectedChat(chatId);
+  }, []);
+
+  const sendMessage = useCallback(
+    async (
+      message: string,
+      senderId: string,
+      chatId: string,
+      setMessage: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+      const response = await ChatService.sendMessage(chatId, message, senderId);
+      setMessage("");
+      setChatGroupMessages((prev) => [...prev, response.data]);
+    },
+    []
+  );
 
   return (
     <ChatContext.Provider
