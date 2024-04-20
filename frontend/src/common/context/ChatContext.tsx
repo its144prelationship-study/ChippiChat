@@ -3,6 +3,8 @@ import { OriInfo } from "../../pages/RegisterPage/components/InputForm";
 import { ChatListType } from "../../pages/ChatPage/types/ChatListType";
 import { ChatContextType } from "../types/ChatContextType";
 import { ChatService } from "../services/ChatService";
+import socket from "../socket";
+import { Socket } from "socket.io-client";
 
 export type groupMembers = {
   id: string;
@@ -30,6 +32,11 @@ export type chatGroupMessages = {
   timestamp: Date;
 };
 
+export type OnlineUser = {
+  user_id: string;
+  username: string;
+};
+
 export const ChatContext = createContext<ChatContextType>(
   {} as ChatContextType
 );
@@ -49,7 +56,48 @@ export const ChatContextProvider = ({
   const [chatGroupMessages, setChatGroupMessages] = useState<
     chatGroupMessages[]
   >([]);
-
+  const [newMessage, setNewMessage] = useState<chatGroupMessages>();
+  const [chatSocket, setChatSocket] = useState<Socket | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineUser>>();
+  //connect to socket
+  useEffect(() => {
+    setChatSocket(socket);
+    return () => {
+      socket?.disconnect();
+    };
+  }, [user]);
+  //add online user
+  useEffect(() => {
+    if (chatSocket === null) return;
+    socket.emit("addOnlineUser", {
+      user_id: user.user_id,
+      username: user.username,
+    });
+    socket.on("onlineUsers", (users: Map<string, OnlineUser>) => {
+      setOnlineUsers(users);
+    });
+    return () => {
+      socket.off("onlineUsers");
+    };
+  }, [chatSocket]);
+  //send message
+  useEffect(() => {
+    if (chatSocket === null) return;
+    socket.emit("sendMessage", { ...newMessage, groupMembers, selectedChat });
+  }, [newMessage]);
+  //receive message
+  useEffect(() => {
+    if (chatSocket === null) return;
+    socket.on("newMessage", (message: chatGroupMessages, chatId: string) => {
+      if (chatId === selectedChat) {
+        setChatGroupMessages((prev) => [...prev, message]);
+      }
+    });
+    return () => {
+      socket.off("newMessage");
+    };
+  }, [socket, selectedChat]);
+  //get message
   useEffect(() => {
     const getChatLists = async () => {
       const response = await ChatService.getChatLists(user.user_id);
@@ -61,7 +109,7 @@ export const ChatContextProvider = ({
     getChatLists();
     setCurrentId(user.user_id);
   }, [user]);
-
+  //get messages and members
   useEffect(() => {
     const getMessages = async () => {
       const response = await ChatService.getAllMessages(selectedChat);
@@ -70,13 +118,21 @@ export const ChatContextProvider = ({
         setChatGroupMessages(data.data);
       }
     };
+    const getAllMembers = async () => {
+      const response = await ChatService.getAllMembers(selectedChat);
+      const data = await response.json();
+      if (data.success) {
+        setGroupMembers(data.data);
+      }
+    };
+    getAllMembers();
     getMessages();
   }, [selectedChat]);
-
+  //update selected chat
   const updateSelectedChat = useCallback((chatId: string) => {
     setSelectedChat(chatId);
   }, []);
-
+  //send message
   const sendMessage = useCallback(
     async (
       message: string,
@@ -86,6 +142,7 @@ export const ChatContextProvider = ({
     ) => {
       const response = await ChatService.sendMessage(chatId, message, senderId);
       setMessage("");
+      setNewMessage(response.data);
       setChatGroupMessages((prev) => [...prev, response.data]);
     },
     []

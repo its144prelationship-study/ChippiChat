@@ -3,14 +3,14 @@ import InputText from "../../common/components/Input/InputText";
 import { LoginService } from "./services/LoginService";
 import { LoginSchema, OnlineUserSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
-import { io } from "socket.io-client"
+import socket from "../../common/socket";
 
 export default function LoginPage() {
   const [valid, setValid] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const tempPassword = '*'.repeat(password.length);
-  const socket = io("http://localhost:5789");
+  const tempPassword = "*".repeat(password.length);
+  // const socket = io("http://localhost:5789");
 
   if (LocalStorageUtils.getData("token")) {
     window.location.href = "/search";
@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     const loginInfo: LoginSchema = {
       username: username,
-      password: password
+      password: password,
     };
 
     const response = await LoginService.login(loginInfo);
@@ -38,7 +38,7 @@ export default function LoginPage() {
 
     const user: OnlineUserSchema = {
       user_id: response.data.user_id,
-      username: response.data.username
+      username: response.data.username,
     };
 
     socket.emit("addOnlineUser", user);
