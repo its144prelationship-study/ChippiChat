@@ -157,6 +157,11 @@ export const ChatContextProvider = ({
         currentId: currentId,
         groupMembers: groupMembers,
         chatGroupMessages: chatGroupMessages,
+        newMessage: newMessage,
+        chatSocket: chatSocket,
+        onlineUsers: onlineUsers,
+        updateSelectedChat: updateSelectedChat,
+        sendMessage: sendMessage,
       }}
     >
       {children}
