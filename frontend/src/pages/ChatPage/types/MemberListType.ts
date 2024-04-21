@@ -1,5 +1,5 @@
 export type MemberListType = {
-    user_id: string;
+    _id: string;
     username: string;
     profile_picture: string;
     selected: boolean;

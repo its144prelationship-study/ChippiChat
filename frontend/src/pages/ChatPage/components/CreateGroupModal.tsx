@@ -1,11 +1,17 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture"
 import MemberListComponent from "./MemberListComponent";
 import CancelButton from "../../../common/components/Button/CancelButton/CancelButton";
 import ConfirmButton from "../../../common/components/Button/ConfirmButton/ConfirmButton";
 import SelectGroupPictureModal from "./SelectGroupPictureModal";
 import { AuthContext } from "../../../common/context/AuthContext";
-import { ChatService } from "../../../common/services/ChatService";
+import { ChatService } from "../services/ChatService";
+
+type UserListType = {
+  _id: string;
+  username: string;
+  profile_picture: string;
+};
 
 export default function CreateGroupModal(props: { setCreateGroup: (createGroup: boolean) => void }) {
   const user = useContext(AuthContext);
@@ -14,15 +20,21 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
   const [selectGroupPicture, setSelectGroupPicture] = useState<boolean>(false);
   const [groupPicture, setGroupPicture] = useState<string>("11");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [allUsers, setAllUsers] = useState<UserListType[]>([]);
 
-  const onlineUsers = [
-    { user_id: "661fe5fdff2fb5758f5aec89", username: "cotton", profile_picture: "9" },
-    { user_id: "661fec8e7f40f153f3807bc5", username: "eight", profile_picture: "3" },
-    { user_id: "661ffdc3640844eb70bc4104", username: "woonhakki", profile_picture: "1" },
-    { user_id: "661ffe83640844eb70bc410c", username: "myungjae", profile_picture: "1" },
-    { user_id: "6620c90f0884c67553955641", username: "username", profile_picture: "1" },
-    { user_id: "6624d9a01b0238a0b014250e", username: "try", profile_picture: "9" },
-  ]
+  useEffect(() => {
+    async function fetchAllUsers() {
+      try {
+        const users = await ChatService.getAllUsers();
+        const filteredUsers = users.filter((u: UserListType) => u._id !== user.user_id);
+        setAllUsers(filteredUsers);
+      } catch (error) {
+        console.error("Error fetching all users:", error);
+      }
+    }
+
+    fetchAllUsers();
+  }, []);
 
   const handleChangeGroupName = (value: string) => {
     setGroupName(value);
@@ -48,8 +60,11 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
     }
 
     const response = await ChatService.createGroup([user.user_id, ...selectedMembers], groupName, groupPicture);
-    console.log(response);
-
+    if (!response) {
+      console.error("Failed to create group");
+      return;
+    }
+    
     props.setCreateGroup(false);
   };
 
@@ -87,14 +102,14 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
             />
           </div>
         </div>
-        <div className="h-[320px] w-fit rounded-xl pt-5 px-4 py-2 border-2 border-black/20 overflow-y-auto scrollbar-none">
+        <div className="h-[320px] w-[26rem] rounded-xl pt-5 px-4 py-2 border-2 border-black/20 overflow-y-auto scrollbar-none">
           <div className="flex flex-col gap-1">
-            {onlineUsers.map((user, index) => (
+            {allUsers.map((user: UserListType, index) => (
               <MemberListComponent
                 key={index}
                 {...user}
-                selected={selectedMembers.includes(user.user_id)}
-                onMemberClick={() => handleMemberSelection(user.user_id)}
+                selected={selectedMembers.includes(user._id)}
+                onMemberClick={() => handleMemberSelection(user._id)}
               />
             ))}
           </div>

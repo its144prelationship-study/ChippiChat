@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 import { OriInfo } from "../../pages/RegisterPage/components/InputForm";
 import { ChatListType } from "../../pages/ChatPage/types/ChatListType";
 import { ChatContextType } from "../types/ChatContextType";
-import { ChatService } from "../services/ChatService";
+import { ChatService } from "../../pages/ChatPage/services/ChatService";
 import socket from "../socket";
 import { Socket } from "socket.io-client";
 
