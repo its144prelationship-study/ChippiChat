@@ -79,7 +79,10 @@ export default function SearchPage() {
                   chat_name={user.chat_name}
                   members={user.members}
                   profile_picture={user.profile_picture}
-                  onClick={() => {}}
+                  onClick={() => {
+                    chat.updateSelectedChat(user.chat_id);
+                    window.location.href = "/chat";
+                  }}
                 />
               );
             })}

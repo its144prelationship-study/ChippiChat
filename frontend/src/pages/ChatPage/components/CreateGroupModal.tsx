@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture"
 import MemberListComponent from "./MemberListComponent";
 import CancelButton from "../../../common/components/Button/CancelButton/CancelButton";
@@ -51,19 +51,8 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
       setHasGroupName(false);
       return;
     }
-
-    console.log("Create Group");
-    console.log("Group Name:", groupName);
-    console.log("Group Picture:", groupPicture);
-    console.log("Selected Members:", selectedMembers);
     props.setCreateGroup(false);
   };
-
-  useEffect(() => {
-    console.log("GroupName:", groupName);
-    console.log("GroupPicture:", groupPicture);
-    console.log("SelectedMembers:", selectedMembers);
-  }, [groupName, groupPicture, selectedMembers]);
 
   return (
     <>

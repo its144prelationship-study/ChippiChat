@@ -13,7 +13,7 @@ import { ChatContextType } from "../../common/types/ChatContextType";
 export default function ChatPage() {
   const user: OriInfo = useContext(AuthContext);
   const chat: ChatContextType = useContext(ChatContext);
-  const [selectedChat, setSelectedChat] = useState("1");
+  const [selectedChat, setSelectedChat] = useState(chat.selectedChat);
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
   const [chatColor, setChatColor] = useState("orange");
@@ -205,6 +205,9 @@ export default function ChatPage() {
       }
     }
   }, [selectedChat, chatColor]);
+  useEffect(() => {
+    chat.updateSelectedChat(selectedChat);
+  }, [selectedChat]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />
@@ -227,21 +230,21 @@ export default function ChatPage() {
       )}
       <div className="flex flex-row">
         <ChatLists
-          chatLists={chatLists}
+          chatLists={chat.chatLists}
           setCreateGroup={setCreateGroup}
           selectedChat={selectedChat}
           setSelectedChat={setSelectedChat}
         />
         <Chat
-          chatColor={chatColor}
+          chatColor={chat.chatColor}
           setChangeColor={setChangeColor}
           selectedChat={selectedChat}
-          chatInfo={chatLists.find((chat) => chat.id === selectedChat) ?? null}
-          groupMembers={groupMembers}
-          chatMessages={chatGroupMessages}
+          chatInfo={chat.chatLists.find((chat) => chat.id === selectedChat) ?? null}
+          groupMembers={chat.groupMembers as any[]}
+          chatMessages={chat.chatGroupMessages as any[]}
           isPinned={isPinned}
           setIsPinned={setIsPinned}
-          userId={currentId}
+          userId={user.user_id}
         />
       </div>
     </main>

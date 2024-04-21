@@ -39,6 +39,10 @@ export const connectSocket = (app: Application) => {
       socketService.removeOnlineUser(socket);
       io.emit("onlineUsers", socketService.getOnlineUsers());
     });
+
+    socket.on("onlineUsers", () => {
+      io.emit("onlineUsers", socketService.getOnlineUsers());
+    });
   });
 
   return server;
