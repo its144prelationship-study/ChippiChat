@@ -48,4 +48,25 @@ export const ChatService = {
     });
     return response.json();
   },
+  createGroup: async (participants: string[], groupName: string, groupPicture: string) => {
+    try {
+      const response = await fetch(`${environment.backend.url}/api/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          participants,
+          group_name: groupName,
+          group_picture: groupPicture,
+          background_color: "orange",
+          is_group: true,
+        }),
+      });
+      return response.json();
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  },
 };

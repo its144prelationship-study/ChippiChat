@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture"
 import MemberListComponent from "./MemberListComponent";
 import CancelButton from "../../../common/components/Button/CancelButton/CancelButton";
 import ConfirmButton from "../../../common/components/Button/ConfirmButton/ConfirmButton";
 import SelectGroupPictureModal from "./SelectGroupPictureModal";
+import { AuthContext } from "../../../common/context/AuthContext";
+import { ChatService } from "../../../common/services/ChatService";
 
 export default function CreateGroupModal(props: { setCreateGroup: (createGroup: boolean) => void }) {
+  const user = useContext(AuthContext);
   const [groupName, setGroupName] = useState<string>("");
   const [hasGroupName, setHasGroupName] = useState<boolean>(true);
   const [selectGroupPicture, setSelectGroupPicture] = useState<boolean>(false);
@@ -13,20 +16,12 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
   const onlineUsers = [
-    { user_id: "01", username: "WoonHakki", profile_picture: "1" },
-    { user_id: "02", username: "HamJisung", profile_picture: "2" },
-    { user_id: "03", username: "แม๋ว", profile_picture: "5" },
-    { user_id: "04", username: "Ped Ped", profile_picture: "3" },
-    { user_id: "05", username: "Pang Pang", profile_picture: "4" },
-    { user_id: "06", username: "Nong Nong", profile_picture: "6" },
-    { user_id: "07", username: "Mhee Mhee", profile_picture: "7" },
-    { user_id: "08", username: "Nan Nan", profile_picture: "8" },
-    { user_id: "09", username: "Ploy Ploy", profile_picture: "9" },
-    { user_id: "10", username: "Pang Pang", profile_picture: "4" },
-    { user_id: "11", username: "Nong Nong", profile_picture: "6" },
-    { user_id: "12", username: "Mhee Mhee", profile_picture: "7" },
-    { user_id: "13", username: "Nan Nan", profile_picture: "8" },
-    { user_id: "14", username: "Ploy Ploy", profile_picture: "9" },
+    { user_id: "661fe5fdff2fb5758f5aec89", username: "cotton", profile_picture: "9" },
+    { user_id: "661fec8e7f40f153f3807bc5", username: "eight", profile_picture: "3" },
+    { user_id: "661ffdc3640844eb70bc4104", username: "woonhakki", profile_picture: "1" },
+    { user_id: "661ffe83640844eb70bc410c", username: "myungjae", profile_picture: "1" },
+    { user_id: "6620c90f0884c67553955641", username: "username", profile_picture: "1" },
+    { user_id: "6624d9a01b0238a0b014250e", username: "try", profile_picture: "9" },
   ]
 
   const handleChangeGroupName = (value: string) => {
@@ -46,16 +41,15 @@ export default function CreateGroupModal(props: { setCreateGroup: (createGroup: 
     });
   };
 
-  const handleCreateGroup = () => {
+  const handleCreateGroup = async () => {
     if (groupName === "") {
       setHasGroupName(false);
       return;
     }
 
-    console.log("Create Group");
-    console.log("Group Name:", groupName);
-    console.log("Group Picture:", groupPicture);
-    console.log("Selected Members:", selectedMembers);
+    const response = await ChatService.createGroup([user.user_id, ...selectedMembers], groupName, groupPicture);
+    console.log(response);
+
     props.setCreateGroup(false);
   };
 
