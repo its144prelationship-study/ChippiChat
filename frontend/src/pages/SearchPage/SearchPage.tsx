@@ -35,6 +35,10 @@ export default function SearchPage() {
     }
   }, [state]);
 
+  const joinGroupChat = async (chat_id: string) => {
+    await SearchService.joinGroupChat(chat_id, user.user_id);
+  };
+
   return (
     <>
       <main className="w-full min-h-[100vh] bg-cpc-blue">
@@ -71,16 +75,17 @@ export default function SearchPage() {
             </p>
           </span>
           <div className="w-3/5 grid grid-cols-3 justify-evenly justify-items-center items-center">
-            {onlineUsers.map((user, index) => {
+            {onlineUsers.map((onlineuser, index) => {
               return (
                 <OnlineUser
                   key={index}
                   is_group={state === "group"}
-                  chat_name={user.chat_name}
-                  members={user.members}
-                  profile_picture={user.profile_picture}
+                  chat_name={onlineuser.chat_name}
+                  members={onlineuser.members}
+                  profile_picture={onlineuser.profile_picture}
                   onClick={() => {
-                    chat.updateSelectedChat(user.chat_id);
+                    chat.updateSelectedChat(onlineuser.chat_id);
+                    if (state === "group") joinGroupChat(onlineuser.chat_id);
                     window.location.href = "/chat";
                   }}
                 />
