@@ -7,10 +7,7 @@ import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
 import { AuthContext } from "../../common/context/AuthContext";
 import { ChatListType } from "./types/ChatListType";
-import {
-  ChatContext,
-  ChatContextProvider,
-} from "../../common/context/ChatContext";
+import { ChatContext } from "../../common/context/ChatContext";
 import { ChatContextType } from "../../common/types/ChatContextType";
 
 export default function ChatPage() {
@@ -210,47 +207,43 @@ export default function ChatPage() {
   }, [selectedChat, chatColor]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
-      <ChatContextProvider user={user}>
-        <NavBar menuFocus="chat" user={user} />
-        {(createGroup || changeColor) && (
-          <div
-            className="absolute inset-0 bg-black bg-opacity-40 z-10"
-            onClick={() => {
-              setCreateGroup(false);
-              setChangeColor(false);
-            }}
-          />
-        )}
-        {createGroup && <CreateGroupModal setCreateGroup={setCreateGroup} />}
-        {changeColor && (
-          <SelectedChatColorModal
-            chatColor={chatColor}
-            setChatColor={setChatColor}
-            setChangeColor={setChangeColor}
-          />
-        )}
-        <div className="flex flex-row">
-          <ChatLists
-            chatLists={chatLists}
-            setCreateGroup={setCreateGroup}
-            selectedChat={selectedChat}
-            setSelectedChat={setSelectedChat}
-          />
-          <Chat
-            chatColor={chatColor}
-            setChangeColor={setChangeColor}
-            selectedChat={selectedChat}
-            chatInfo={
-              chatLists.find((chat) => chat.id === selectedChat) ?? null
-            }
-            groupMembers={groupMembers}
-            chatMessages={chatGroupMessages}
-            isPinned={isPinned}
-            setIsPinned={setIsPinned}
-            userId={currentId}
-          />
-        </div>
-      </ChatContextProvider>
+      <NavBar menuFocus="chat" user={user} />
+      {(createGroup || changeColor) && (
+        <div
+          className="absolute inset-0 bg-black bg-opacity-40 z-10"
+          onClick={() => {
+            setCreateGroup(false);
+            setChangeColor(false);
+          }}
+        />
+      )}
+      {createGroup && <CreateGroupModal setCreateGroup={setCreateGroup} />}
+      {changeColor && (
+        <SelectedChatColorModal
+          chatColor={chatColor}
+          setChatColor={setChatColor}
+          setChangeColor={setChangeColor}
+        />
+      )}
+      <div className="flex flex-row">
+        <ChatLists
+          chatLists={chatLists}
+          setCreateGroup={setCreateGroup}
+          selectedChat={selectedChat}
+          setSelectedChat={setSelectedChat}
+        />
+        <Chat
+          chatColor={chatColor}
+          setChangeColor={setChangeColor}
+          selectedChat={selectedChat}
+          chatInfo={chatLists.find((chat) => chat.id === selectedChat) ?? null}
+          groupMembers={groupMembers}
+          chatMessages={chatGroupMessages}
+          isPinned={isPinned}
+          setIsPinned={setIsPinned}
+          userId={currentId}
+        />
+      </div>
     </main>
   );
 }
