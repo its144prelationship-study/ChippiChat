@@ -1,21 +1,20 @@
 import { Socket } from "socket.io";
-import { OnlineUser } from "../types/user.types";
 
 export const socketService = {
-  onlineUsers: new Map<string, OnlineUser>(),
-  addOnlineUser: (socket: Socket, userInfo: OnlineUser) => {
+  onlineUsers: new Map<string, string>(),
+  addOnlineUser: (socket: Socket, userId: string) => {
     let userExists = false;
     for (const existingUserInfo of Array.from(
       socketService.onlineUsers.values()
     )) {
       // Compare user info fields (example: username) to determine if it already exists
-      if (existingUserInfo.user_id === userInfo.user_id) {
+      if (existingUserInfo === userId) {
         userExists = true;
         break;
       }
     }
     if (!userExists) {
-      socketService.onlineUsers.set(socket.id, userInfo);
+      socketService.onlineUsers.set(socket.id, userId);
     }
     console.log("online users:", socketService.onlineUsers);
   },
@@ -27,8 +26,8 @@ export const socketService = {
     return socketService.onlineUsers;
   },
   getSocketId: (user_id: string) => {
-    for (const [socketId, userInfo] of Array.from(socketService.onlineUsers)) {
-      if (userInfo.user_id === user_id) {
+    for (const [socketId, userId] of Array.from(socketService.onlineUsers)) {
+      if (userId === user_id) {
         return socketId;
       }
     }

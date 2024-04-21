@@ -5,7 +5,6 @@ import { socketService } from "../services/socket.service";
 import {
   chatGroupMessages,
   groupMembers,
-  OnlineUser,
 } from "../types/user.types";
 
 export const io = new Server();
@@ -15,8 +14,8 @@ export const connectSocket = (app: Application) => {
 
   io.on("connection", (socket: Socket) => {
     console.log("New connection from user:", socket.id);
-    socket.on("addOnlineUser", (user: OnlineUser) => {
-      socketService.addOnlineUser(socket, user);
+    socket.on("addOnlineUser", (userId: string) => {
+      socketService.addOnlineUser(socket, userId);
       io.emit("onlineUsers", socketService.getOnlineUsers());
     });
 

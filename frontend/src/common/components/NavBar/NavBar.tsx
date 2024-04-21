@@ -31,7 +31,7 @@ export default function NavBar({
 
   const handleLogout = () => {
     LocalStorageUtils.removeData("token");
-    navigate("/login");
+    window.location.href = "/";
   };
 
   return (
@@ -40,7 +40,7 @@ export default function NavBar({
         {menuList.map((menu, index) => (
           <div key={menu.focus} className="relative w-[250px]">
             {menuFocus === menu.focus ? ring("#2260FF") : ring("#FFFFFF")}
-            <a
+            <div
               key={index}
               style={{
                 textShadow: `
@@ -51,10 +51,10 @@ export default function NavBar({
               className={`${
                 menuFocus === menu.focus ? "text-cpc-blue" : ""
               } w-[170px] cursor-pointer text-[26px] font-dm-mono z-3 absolute top-10 left-[3rem] flex text-center`}
-              href={menu.href}
+              onClick={() => { navigate(menu.href); }}
             >
               {menu.name}
-            </a>
+            </div>
           </div>
         ))}
       </div>

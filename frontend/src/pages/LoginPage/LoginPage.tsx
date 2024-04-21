@@ -4,16 +4,19 @@ import { LoginService } from "./services/LoginService";
 import { LoginSchema, OnlineUserSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import socket from "../../common/socket";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { AuthContextType } from "../../common/types/AuthContextType";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [valid, setValid] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const tempPassword = "*".repeat(password.length);
-  // const socket = io("http://localhost:5789");
 
   if (LocalStorageUtils.getData("token")) {
-    window.location.href = "/search";
+    navigate("/search");
   }
 
   const login = async () => {
@@ -36,13 +39,15 @@ export default function LoginPage() {
     setValid(true);
     LocalStorageUtils.setData("token", response.data.token);
 
+    const decoded = jwtDecode<AuthContextType>(response.data.token);
+
     const user: OnlineUserSchema = {
-      user_id: response.data.user_id,
-      username: response.data.username,
+      user_id: decoded.user_id,
+      username: decoded.username,
     };
 
     socket.emit("addOnlineUser", user);
-    window.location.href = "/search";
+    navigate("/search");
   };
 
   const onChangePassword = (value: string) => {
@@ -96,9 +101,9 @@ export default function LoginPage() {
             <span className="font-normal text-xl text-cpc-blue">
               Don't have an account yet ?
               <br />
-              <a href="/register" className="underline">
+              <div className="underline" onClick={() => { navigate("/register") }}>
                 SIGN IN
-              </a>
+              </div>
             </span>
             <div
               className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"

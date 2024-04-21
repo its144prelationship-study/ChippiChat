@@ -9,11 +9,6 @@ export interface CreateUser {
   profile_picture: string;
 }
 
-export interface OnlineUser {
-  user_id: string;
-  username: string;
-}
-
 export interface UpdateUser {
   username: string;
   profile_picture: string;
