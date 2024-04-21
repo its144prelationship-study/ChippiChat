@@ -1,12 +1,10 @@
 import { useState } from "react";
 import InputText from "../../common/components/Input/InputText";
 import { LoginService } from "./services/LoginService";
-import { LoginSchema, OnlineUserSchema } from "./types/LoginType";
+import { LoginSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import socket from "../../common/socket";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { AuthContextType } from "../../common/types/AuthContextType";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -16,7 +14,7 @@ export default function LoginPage() {
   const tempPassword = "*".repeat(password.length);
 
   if (LocalStorageUtils.getData("token")) {
-    navigate("/search");
+    window.location.href = "/search"
   }
 
   const login = async () => {
@@ -30,23 +28,13 @@ export default function LoginPage() {
       password: password,
     };
 
-    const response = await LoginService.login(loginInfo);
-    if (!response.success) {
+    const userId = await LoginService.login(loginInfo);
+    if (!userId) {
       setValid(false);
       return;
     }
 
-    setValid(true);
-    LocalStorageUtils.setData("token", response.data.token);
-
-    const decoded = jwtDecode<AuthContextType>(response.data.token);
-
-    const user: OnlineUserSchema = {
-      user_id: decoded.user_id,
-      username: decoded.username,
-    };
-
-    socket.emit("addOnlineUser", user);
+    socket.emit("addOnlineUser", userId);
     navigate("/search");
   };
 

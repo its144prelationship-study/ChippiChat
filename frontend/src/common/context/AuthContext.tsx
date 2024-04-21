@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createContext } from "react";
 import { jwtDecode } from "jwt-decode";
-import { AuthContextType } from "../types/AuthContextType";
+import { AuthContextType, TokenInfo } from "../types/AuthContextType";
 import { LocalStorageUtils } from "../utils/LocalStorageUtil";
 import { environment } from "../constants/environment";
 
@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return;
         }
 
-        const decodedToken = jwtDecode<AuthContextType>(token);
-        if (!decodedToken) {
+        const decoded = jwtDecode<TokenInfo>(token);
+        if (!decoded) {
           LocalStorageUtils.removeData("token");
           window.location.href = "/login";
           return;

@@ -23,7 +23,6 @@ export const userService = {
         return {
           success: true,
           message: "User created",
-          data: user,
         };
       } else {
         return {
@@ -47,7 +46,7 @@ export const userService = {
       if (!user) {
         return { success: false, code: 400, message: "Cannot update user" };
       }
-      return { success: true, code: 200, data: user };
+      return { success: true, message: "User Updated" };
     } catch (err) {
       console.error(err.message);
       return { success: false, code: 500, message: "Internal server error" };

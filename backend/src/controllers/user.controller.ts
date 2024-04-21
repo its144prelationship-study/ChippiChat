@@ -17,13 +17,13 @@ export const userController = {
       });
     }
 
-    const user = await userService.createUser(req.body);
-    if (user.success) {
-      res.status(201).json(user);
+    const response = await userService.createUser(req.body);
+    if (response.success) {
+      res.status(201).json(response);
     } else {
-      res.status(user.code).json({
+      res.status(response.code).json({
         success: false,
-        message: user.message,
+        message: response.message,
       });
     }
   },
@@ -73,13 +73,13 @@ export const userController = {
           message: "Username is required",
         });
       }
-      const user = await userService.updateUsr(req.params.userId, req.body);
-      if (user.success) {
-        res.status(201).json(user);
+      const response = await userService.updateUsr(req.params.userId, req.body);
+      if (response.success) {
+        res.status(201).json(response);
       } else {
-        res.status(user.code).json({
+        res.status(response.code).json({
           success: false,
-          message: user.message,
+          message: response.message,
         });
       }
     } catch (err) {

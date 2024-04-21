@@ -3,3 +3,7 @@ export type AuthContextType = {
     username: string;
     profile_picture: string;
 };
+
+export type TokenInfo = {
+    user_id: string;
+}

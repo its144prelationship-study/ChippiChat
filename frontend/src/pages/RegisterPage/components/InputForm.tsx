@@ -76,12 +76,7 @@ export default function InputForm({
       password: password,
       profile_picture: profilePic,
     };
-    const response = await RegisterService.createUser(registerInfo);
-    if (!response.success) {
-      return false;
-    } else {
-      return true;
-    }
+    return await RegisterService.createUser(registerInfo);
   };
 
   const editProfile = async () => {
@@ -90,8 +85,7 @@ export default function InputForm({
       profile_picture: profilePic,
     };
     const user_id = oriInfo ? oriInfo.user_id : "";
-    const response = await RegisterService.updateUser(updateUserInfo, user_id);
-    return response.data;
+    return await RegisterService.updateUser(updateUserInfo, user_id);
   };
 
   return (
@@ -233,8 +227,8 @@ export default function InputForm({
               alert("Cannot Create User");
             }
           } else {
-            const data = await editProfile();
-            if (data) {
+            const response = await editProfile();
+            if (response) {
               window.location.reload();
             } else {
               alert("Cannot Update User");
