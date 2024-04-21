@@ -39,3 +39,10 @@ export type chatGroupMessages = {
   message: string;
   timestamp: Date;
 };
+
+export type userInfo = {
+  username: string;
+  profile_picture: string;
+  user_id: string;
+  socket_id?: string;
+};

@@ -14,7 +14,7 @@ export default function LoginPage() {
   const tempPassword = "*".repeat(password.length);
 
   if (LocalStorageUtils.getData("token")) {
-    window.location.href = "/search"
+    window.location.href = "/search";
   }
 
   const login = async () => {
@@ -34,7 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-    socket.emit("addOnlineUser", userId);
+    // socket.emit("addOnlineUser", userId);
     navigate("/search");
   };
 
@@ -89,7 +89,12 @@ export default function LoginPage() {
             <span className="font-normal text-xl text-cpc-blue">
               Don't have an account yet ?
               <br />
-              <div className="underline" onClick={() => { navigate("/register") }}>
+              <div
+                className="underline"
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
                 SIGN IN
               </div>
             </span>

@@ -61,18 +61,17 @@ export const ChatContextProvider = ({
   const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineUser>>();
   //connect to socket
   useEffect(() => {
-    setChatSocket(socket);
-    return () => {
-      socket?.disconnect();
-    };
+    console.log("connect to socket from chat context");
+    if (user.user_id) setChatSocket(socket);
+    // return () => {
+    //   socket.emit("disconnect", user.user_id);
+    // };
   }, [user]);
   //add online user
   useEffect(() => {
     if (chatSocket === null) return;
-    socket.emit("addOnlineUser", {
-      user_id: user.user_id,
-      username: user.username,
-    });
+    console.log("add online user", user);
+    socket.emit("addOnlineUser", user);
     socket.on("onlineUsers", (users: Map<string, OnlineUser>) => {
       setOnlineUsers(users);
     });
