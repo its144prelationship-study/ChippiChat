@@ -4,7 +4,7 @@ import { environment } from "../../../common/constants/environment";
 
 export const LoginService = {
 	login: async (loginInfo: LoginSchema) => {
-		const response = await fetch(`${environment.backend}/api/user/login`, {
+		const response = await fetch(`${environment.backend.url}/api/user/login`, {
 			method: "POST",
 			body: JSON.stringify(loginInfo),
 			headers: {

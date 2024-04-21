@@ -3,7 +3,7 @@ import { environment } from "../../../common/constants/environment";
 
 export const RegisterService = {
     validateUsername: async (username:string) => {
-        const response = await fetch(`${environment.backend}/api/user/validateUsername/${username}`);
+        const response = await fetch(`${environment.backend.url}/api/user/validateUsername/${username}`);
         console.log(response)
         if (!response.ok) {
             throw new Error('Failed to fetch data');
@@ -13,7 +13,7 @@ export const RegisterService = {
         else{return false}
     },
     createUser: async (registerInfo : RegisterSchema) => {
-        const response = await fetch(`${environment.backend}/api/user/`, {
+        const response = await fetch(`${environment.backend.url}/api/user/`, {
 		method: "POST",
 		body: JSON.stringify(registerInfo),
 		headers: {
@@ -23,7 +23,7 @@ export const RegisterService = {
 		return response.json();
     },
     updateUser: async (updateUserInfo : UpdateUserSchema,userId : string) => {
-        const response = await fetch(`${environment.backend}/api/user/${userId}`,{
+        const response = await fetch(`${environment.backend.url}/api/user/${userId}`,{
         method: "PUT",
         body: JSON.stringify(updateUserInfo),
         headers: {
