@@ -1,6 +1,8 @@
+import { environment } from "../../common/constants/environment";
+
 export const ChatService = {
   getChatLists: async (userId: string) => {
-    const response = await fetch(`http://localhost:5789/api/chat/${userId}`, {
+    const response = await fetch(`${environment.backend}/api/chat/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -10,7 +12,7 @@ export const ChatService = {
   },
   getAllMessages: async (chatId: string) => {
     const response = await fetch(
-      `http://localhost:5789/api/message/${chatId}`,
+      `${environment.backend}/api/message/${chatId}`,
       {
         method: "GET",
         headers: {
@@ -22,7 +24,7 @@ export const ChatService = {
   },
   getAllMembers: async (chatId: string) => {
     const response = await fetch(
-      `http://localhost:5789/api/chat/members/${chatId}`,
+      `${environment.backend}/api/chat/members/${chatId}`,
       {
         method: "GET",
         headers: {
@@ -33,7 +35,7 @@ export const ChatService = {
     return response.json();
   },
   sendMessage: async (chatId: string, message: string, senderId: string) => {
-    const response = await fetch(`http://localhost:5789/api/message`, {
+    const response = await fetch(`${environment.backend}/api/message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

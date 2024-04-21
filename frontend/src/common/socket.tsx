@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
+import { environment } from "../common/constants/environment";
 
-const socket = io("http://localhost:5789");
+const socket = io(`${environment.backend}`);
 
 export default socket;

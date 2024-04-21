@@ -1,18 +1,19 @@
 import { RegisterSchema, UpdateUserSchema } from "../types/RegisterType";
+import { environment } from "../../../common/constants/environment";
 
 export const RegisterService = {
     validateUsername: async (username:string) => {
-        const response = await fetch(`http://localhost:5789/api/user/validateUsername/${username}`);
+        const response = await fetch(`${environment.backend}/api/user/validateUsername/${username}`);
         console.log(response)
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
         const data = await response.json();
         if(!data.data){return true}
-        else{return false};
+        else{return false}
     },
     createUser: async (registerInfo : RegisterSchema) => {
-        const response = await fetch(`http://localhost:5789/api/user/`, {
+        const response = await fetch(`${environment.backend}/api/user/`, {
 		method: "POST",
 		body: JSON.stringify(registerInfo),
 		headers: {
@@ -22,12 +23,12 @@ export const RegisterService = {
 		return response.json();
     },
     updateUser: async (updateUserInfo : UpdateUserSchema,userId : string) => {
-        const response = await fetch(`http://localhost:5789/api/user/${userId}`,{
-            method: "PUT",
-            body: JSON.stringify(updateUserInfo),
-		    headers: {
-			    "Content-Type": "application/json"
-		    }
+        const response = await fetch(`${environment.backend}/api/user/${userId}`,{
+        method: "PUT",
+        body: JSON.stringify(updateUserInfo),
+        headers: {
+            "Content-Type": "application/json"
+        }
         })
         return response.json();
     }
