@@ -135,4 +135,20 @@ export const userService = {
       };
     }
   },
+  getAllUsers: async () => {
+    try {
+      const users = await userRepository.getAllUsers();
+      return {
+        success: true,
+        data: users
+      };
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error"
+      };
+    }
+  }
 };

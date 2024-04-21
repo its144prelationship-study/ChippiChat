@@ -154,4 +154,16 @@ export const userController = {
       });
     }
   },
+  getAllUsers: async (req: Request, res: Response) => {
+    try {
+      const response = await userService.getAllUsers();
+      res.status(200).json(response);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
 };

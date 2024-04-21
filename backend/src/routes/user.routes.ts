@@ -10,5 +10,6 @@ router.post('/login', userController.login);
 router.post('/logout', protect, userController.logout);
 router.get('/me', protect, userController.getCurrentUser);
 router.get('/validateUsername/:username',userController.validateUsername);
+router.get('/', userController.getAllUsers);
 
 export default router;
