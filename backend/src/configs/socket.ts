@@ -17,21 +17,21 @@ export const connectSocket = (app: Application) => {
       io.emit("onlineUsers", socketService.getOnlineUsers());
     });
 
-    // socket.on(
-    //   "sendMessage",
-    //   (
-    //     message: chatGroupMessages,
-    //     groupMembers: groupMembers[],
-    //     selectedChat: string
-    //   ) => {
-    //     groupMembers.forEach((member) => {
-    //       const socketId = socketService.getSocketId(member.id);
-    //       if (socketId) {
-    //         io.to(socketId).emit("newMessage", message, selectedChat);
-    //       }
-    //     });
-    //   }
-    // );
+    socket.on(
+      "sendMessage",
+      (
+        message: chatGroupMessages,
+        groupMembers: groupMembers[],
+        selectedChat: string
+      ) => {
+        groupMembers.forEach((member) => {
+          const socketId = socketService.getSocketId(member.id);
+          if (socketId && socketId !== socket.id) {
+            io.to(socketId).emit("newMessage", message, selectedChat);
+          }
+        });
+      }
+    );
 
     socket.on("disconnect", (userId: string) => {
       console.log("disconneted connected for add Online user:");

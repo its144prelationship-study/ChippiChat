@@ -30,12 +30,12 @@ export const socketService = {
     console.log("online users:", socketService.onlineUsers);
     return Array.from(socketService.onlineUsers.values());
   },
-  // getSocketId: (user_id: string) => {
-  //   for (const [socketId, userId] of Array.from(socketService.onlineUsers)) {
-  //     if (userId === user_id) {
-  //       return socketId;
-  //     }
-  //   }
-  //   return null;
-  // },
+  getSocketId: (user_id: string) => {
+    for (const [userId, userInfo] of Array.from(socketService.onlineUsers)) {
+      if (userId === user_id) {
+        return userInfo.socket_id;
+      }
+    }
+    return null;
+  },
 };

@@ -42,18 +42,33 @@ export const chatService = {
       const mappedChats = await Promise.all(
         chats.map(async (chat) => {
           const lastMessage = await messageService.getLastMessage(chat._id);
-          return {
-            id: chat._id,
-            chatname: chat.group_name,
-            last_message: lastMessage.data.message,
-            last_message_time: lastMessage.data.timestamp,
-            unread: 0,
-            is_pinned: false,
-            profile_picture: chat.group_picture,
-            is_group: chat.is_group,
-            members: chat.participants.length,
-            bg_color: chat.background_color,
-          };
+          if (lastMessage.success && lastMessage.data) {
+            return {
+              id: chat._id,
+              chatname: chat.group_name,
+              last_message: lastMessage.data.message,
+              last_message_time: lastMessage.data.timestamp,
+              unread: 0,
+              is_pinned: false,
+              profile_picture: chat.group_picture,
+              is_group: chat.is_group,
+              members: chat.participants.length,
+              bg_color: chat.background_color,
+            };
+          } else {
+            return {
+              id: chat._id,
+              chatname: chat.group_name,
+              last_message: "",
+              last_message_time: "",
+              unread: 0,
+              is_pinned: false,
+              profile_picture: chat.group_picture,
+              is_group: chat.is_group,
+              members: chat.participants.length,
+              bg_color: chat.background_color,
+            };
+          }
         })
       );
       return {
