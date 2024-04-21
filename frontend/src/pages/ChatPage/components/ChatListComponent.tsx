@@ -67,11 +67,11 @@ export default function ChatListComponent({
             className={`h-6 w-6 ml-2 mt-2 -translate-x-[19rem] ${chatter.is_pinned ? "" : "opacity-0"}`}
           />
           <div
-            className={`${color} w-6 h-6 rounded-full flex justify-center items-center ${chatter.unread > 0 ? "" : "opacity-0"}`}
+            className={`w-6 h-6 rounded-full flex justify-center items-center opacity-0}`}
           >
-            <p className={`${(color === "bg-[#FFFA7C]") ? "text-black" : "text-white"} font-ibm-plex-mono font-normal text-xs`}>
+            {/* <p className={`${(color === "bg-[#FFFA7C]") ? "text-black" : "text-white"} font-ibm-plex-mono font-normal text-xs`}>
               {chatter.unread}
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
