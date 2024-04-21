@@ -227,7 +227,6 @@ export default function ChatPage() {
           setCreateGroup={setCreateGroup}
           selectedChat={selectedChat}
           setSelectedChat={setSelectedChat}
-          chatColor={chatColor}
         />
         <Chat
           chatColor={chatColor}

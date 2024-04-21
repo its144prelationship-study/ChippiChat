@@ -1,16 +1,15 @@
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture";
 import PinMark from "../../../assets/pin-mark.svg";
+import { ChatListType } from "../types/ChatListType";
 
 export default function ChatListComponent({
   chatter,
   is_selected,
   setSelectedChat,
-  color,
 }: {
   chatter: ChatListType;
   is_selected: boolean;
   setSelectedChat: (selectedChat: string) => void;
-  color: string;
 }) {
   const showedDate = () => {
     const today = new Date();
