@@ -1,53 +1,36 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import OnlineUser from "./components/OnlineUser";
 import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
 import { AuthContext } from "../../common/context/AuthContext";
+import { SearchService } from "./services/SearchService";
+import { SearchListType } from "./types/SearchListType";
+
 export default function SearchPage() {
-  const user:OriInfo = useContext(AuthContext);
+  const user: OriInfo = useContext(AuthContext);
   const [state, setState] = useState("whisper");
-  const onlineUsers = [
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "1",
-    },
-    {
-      chat_name: "BaanNeeMeerakkkk",
-      members: 5,
-      profile_picture: "11",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "2",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "12",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "3",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "13",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "4",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "14",
-    },
-  ];
+  const [onlineUsers, setOnlineUsers] = useState<SearchListType[]>([]);
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const groups = await SearchService.getAllGroups();
+      const groupList: SearchListType[] = groups.map((group) => {
+        return {
+          chat_id: group._id,
+          chat_name: group.group_name,
+          members: group.participants.length,
+          profile_picture: group.group_picture,
+        };
+      });
+      setOnlineUsers(groupList);
+      console.log(onlineUsers);
+    };
+
+    if (state === "group") {
+      fetchGroups();
+    } else if (state === "whisper") {
+    }
+  }, [state]);
 
   return (
     <>
