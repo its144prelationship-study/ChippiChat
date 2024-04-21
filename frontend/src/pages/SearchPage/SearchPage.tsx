@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import OnlineUser from "./components/OnlineUser";
 import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
-import { AuthContext, AuthProvider } from "../../common/context/AuthContext";
+import { AuthContext } from "../../common/context/AuthContext";
 import { SearchService } from "./services/SearchService";
 import { SearchListType } from "./types/SearchListType";
 import {
@@ -42,7 +42,6 @@ export default function SearchPage() {
     <>
       <main className="w-full min-h-[100vh] bg-cpc-blue">
         <NavBar menuFocus={"search"} user={user} />
-        <AuthProvider>
           <ChatContextProvider user={user}>
             <div className="h-full flex justify-center items-center flex-col py-5">
               <h1 className="font-dm-mono font-normal text-4xl text-white [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25">
@@ -91,7 +90,6 @@ export default function SearchPage() {
               </div>
             </div>
           </ChatContextProvider>
-        </AuthProvider>
       </main>
     </>
   );

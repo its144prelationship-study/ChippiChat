@@ -4,6 +4,7 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import SearchPage from "../pages/SearchPage/SearchPage";
 import ChatPage from "../pages/ChatPage/ChatPage";
+import { AuthProvider } from "../common/context/AuthContext";
 
 export const getPagesData = () =>
   [{
@@ -20,10 +21,10 @@ export const getPagesData = () =>
   },
   {
     path: "/search",
-    element: <SearchPage />,
+    element: <AuthProvider><SearchPage /></AuthProvider>,
   },
   {
     path: "/chat",
-    element: <ChatPage />,
+    element: <AuthProvider><ChatPage /></AuthProvider>,
   },
   ] as unknown as RouteProps[];
