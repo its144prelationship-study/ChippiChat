@@ -11,8 +11,22 @@ import { ChatContextType } from "../../common/types/ChatContextType";
 export default function SearchPage() {
   const user: OriInfo = useContext(AuthContext);
   const chat: ChatContextType = useContext(ChatContext);
-  const [state, setState] = useState("whisper");
+  const [state, setState] = useState("group");
   const [onlineUsers, setOnlineUsers] = useState<SearchListType[]>([]);
+  
+  const whisperList = function(onlineUsersMap) {
+    if (!onlineUsersMap) return [];
+    const onlineUsersArray = Array.from(onlineUsersMap.values());
+    const onlineusers = onlineUsersArray.map((us) => {
+      return {
+        chat_id: us.user_id,
+        chat_name: `${us.username}${us.user_id == user.user_id ? " (me)" : ""}`,
+        members: 2,
+        profile_picture: us.profile_picture,
+      };
+    });
+    return onlineusers;
+  };
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -31,7 +45,8 @@ export default function SearchPage() {
     if (state === "group") {
       fetchGroups();
     } else if (state === "whisper") {
-      console.log(chat.onlineUsers);
+      const whisper = whisperList(chat.onlineUsers);
+      setOnlineUsers(whisper);
     }
   }, [state]);
 
@@ -84,9 +99,11 @@ export default function SearchPage() {
                   members={onlineuser.members}
                   profile_picture={onlineuser.profile_picture}
                   onClick={() => {
-                    chat.updateSelectedChat(onlineuser.chat_id);
-                    if (state === "group") joinGroupChat(onlineuser.chat_id);
-                    window.location.href = "/chat";
+                    if (onlineuser.chat_id != user.user_id){
+                      chat.updateSelectedChat(onlineuser.chat_id);
+                      if (state === "group") joinGroupChat(onlineuser.chat_id);
+                      window.location.href = "/chat";
+                    }
                   }}
                 />
               );
