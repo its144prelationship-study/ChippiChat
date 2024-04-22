@@ -12,7 +12,7 @@ export default function OtherMessage({
   time: string;
 }) {
   return (
-    <div className="w-full flex flex-row justify-start items-end m-2 space-x-3">
+    <div className="w-full flex flex-row justify-start items-end m-2 space-x-3 font-ibm-plex-mono">
       <ProfilePicture pic={profile_picture} className="h-14 w-14" />
       <div>
         {username && (

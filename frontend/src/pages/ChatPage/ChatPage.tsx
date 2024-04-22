@@ -17,141 +17,6 @@ export default function ChatPage() {
   const [chatColor, setChatColor] = useState("orange");
   const [isPinned, setIsPinned] = useState(false);
   console.log(chat);
-  const chatMessages = [
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:00",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:01",
-    },
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
-    },
-
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:03",
-    },
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:04",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:04",
-    },
-  ];
-  const groupMembers = [
-    {
-      id: "00",
-      profile_picture: "1",
-      username: "mhadeang0",
-    },
-    {
-      id: "11",
-      profile_picture: "2",
-      username: "mhadeang1",
-    },
-    {
-      id: "22",
-      profile_picture: "3",
-      username: "mhadeang2",
-    },
-  ];
-  const chatGroupMessages = [
-    {
-      id: "00",
-      message:
-        "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:00",
-    },
-    {
-      id: "11",
-      message:
-        "hihihihihihihihihihihihihihi hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:01",
-    },
-    {
-      id: "22",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "22",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-16 11:02",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-17 11:03",
-    },
-
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-17 11:03",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-18 11:03",
-    },
-    {
-      id: "00",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-18 11:04",
-    },
-    {
-      id: "11",
-      message: "hihihihihihihihihihihihi",
-      timestamp: "2024-04-18 11:04",
-    },
-  ];
   useEffect(() => {
     for (let i = 0; i < chat.chatLists.length; i++) {
       if (chat.chatLists[i].id === chat.selectedChat) {
@@ -160,10 +25,10 @@ export default function ChatPage() {
         break;
       }
     }
-  }, [chat.selectedChat, chatColor]);
+  }, [chat.chatLists, chat.selectedChat, chatColor]);
   useEffect(() => {
     chat.updateSelectedChat(chat.selectedChat);
-  }, [chat.selectedChat]);
+  }, [chat]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />
@@ -196,7 +61,7 @@ export default function ChatPage() {
           setChangeColor={setChangeColor}
           selectedChat={chat.selectedChat}
           chatInfo={chat.chatLists.find((c) => c.id === chat.selectedChat) ?? null}
-          groupMembers={chat.groupMembers as any[]}
+          groupMembers={chat.groupMembers as GroupMemberType[]}
           chatMessages={chat.chatGroupMessages as any[]}
           isPinned={isPinned}
           setIsPinned={setIsPinned}

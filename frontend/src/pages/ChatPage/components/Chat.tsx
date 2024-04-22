@@ -120,7 +120,7 @@ export default function Chat({
             {!previousDate && timeCompontent(current)}
             <OtherMessage
               key={index}
-              username={chatInfo?.is_group ? member.username : null}
+              username={chatInfo?.is_group ? member.name : null}
               profile_picture={member.profile_picture}
               message={message.message}
               time={showedTime(message.timestamp)}

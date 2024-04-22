@@ -57,6 +57,34 @@ export const ChatContextProvider = ({
   const [newMessage, setNewMessage] = useState<chatGroupMessages>();
   const [chatSocket, setChatSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineUser>>();
+
+  const fetchChatLists = async () => {
+    if (!user.user_id) {
+      setChatLists([]);
+      return;
+    }
+
+    const data = await ChatService.getChatLists(user.user_id);
+    if (data) {
+      for (const chat of data) {
+        chat.onChatClick = () => {
+          setSelectedChat(chat.chat_id);
+        };
+      }
+      setChatLists(data);
+    } else {
+      setChatLists([]);
+    }
+  };
+
+  const fetchAllMembers = async () => {
+    const data = await ChatService.getAllMembers(selectedChat);
+    if (data) {
+      setGroupMembers(data);
+    } else {
+      setGroupMembers([]);
+    }
+  };
   //connect to socket
   useEffect(() => {
     console.log("connect to socket from chat context");
@@ -88,6 +116,7 @@ export const ChatContextProvider = ({
     socket.on("newMessage", (message: chatGroupMessages, chatId: string) => {
       if (chatId === selectedChat) {
         setChatGroupMessages((prev) => [...prev, message]);
+        fetchChatLists();
       }
     });
     return () => {
@@ -96,25 +125,7 @@ export const ChatContextProvider = ({
   }, [socket, selectedChat]);
   //get message
   useEffect(() => {
-    const getChatLists = async () => {
-      if (!user.user_id) {
-        setChatLists([]);
-        return;
-      }
-
-      const data = await ChatService.getChatLists(user.user_id);
-      if (data) {
-        for (const chat of data) {
-          chat.onChatClick = () => {
-            setSelectedChat(chat.chat_id);
-          };
-        }
-        setChatLists(data);
-      } else {
-        setChatLists([]);
-      }
-    };
-    getChatLists();
+    fetchChatLists();
     setCurrentId(user.user_id);
   }, [user]);
   //get messages and members
@@ -132,17 +143,8 @@ export const ChatContextProvider = ({
         setChatGroupMessages([]);
       }
     };
-    const getAllMembers = async () => {
-      const data = await ChatService.getAllMembers(selectedChat);
-      console.log("groupMembers from calling ChatService:", data);
-      if (data) {
-        setGroupMembers(data);
-        console.log("groupMembers after being set:", groupMembers)
-      } else {
-        setGroupMembers([]);
-      }
-    };
-    getAllMembers();
+    
+    fetchAllMembers();
     getMessages();
   }, [selectedChat]);
   //update selected chat
@@ -158,6 +160,7 @@ export const ChatContextProvider = ({
     ) => {
       const response = await ChatService.sendMessage(chatId, message, senderId);
       setNewMessage(response.data);
+      fetchChatLists();
       setChatGroupMessages((prev) => [...prev, response.data]);
     },
     []
