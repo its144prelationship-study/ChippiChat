@@ -2,13 +2,23 @@ import { environment } from "../../../common/constants/environment";
 
 export const ChatService = {
     getChatLists: async (userId: string) => {
-        const response = await fetch(`${environment.backend.url}/api/chat/${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        return response.json();
+        try {
+            const response = await fetch(`${environment.backend.url}/api/chat/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                return jsonResponse.data;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
     },
     getAllMessages: async (chatId: string) => {
         const response = await fetch(`${environment.backend.url}/api/message/${chatId}`, {

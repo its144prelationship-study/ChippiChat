@@ -6,6 +6,7 @@ import SelectColorIcon from "../../../assets/select-color-icon.svg";
 import SendIcon from "../../../assets/send-icon.svg";
 import MyMessage from "./messages/MyMessage";
 import OtherMessage from "./messages/OtherMessage";
+import { ChatListType } from "../types/ChatListType";
 
 export default function Chat({
   chatColor,

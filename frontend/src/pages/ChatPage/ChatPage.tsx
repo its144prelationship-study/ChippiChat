@@ -19,6 +19,7 @@ export default function ChatPage() {
   const [chatColor, setChatColor] = useState("orange");
   const [isPinned, setIsPinned] = useState(false);
   console.log(chat, user);
+  console.log("chat.chatLists:", chat.chatLists);
   const chatLists: ChatListType[] = [
     {
       id: "1",

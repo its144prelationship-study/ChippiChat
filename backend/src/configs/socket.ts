@@ -24,7 +24,7 @@ export const connectSocket = (app: Application) => {
         groupMembers: groupMembers[],
         selectedChat: string
       ) => {
-        groupMembers.forEach((member) => {
+        groupMembers.forEach((member: groupMembers) => {
           const socketId = socketService.getSocketId(member.id);
           if (socketId && socketId !== socket.id) {
             io.to(socketId).emit("newMessage", message, selectedChat);

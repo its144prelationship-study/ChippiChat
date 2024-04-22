@@ -99,10 +99,11 @@ export const ChatContextProvider = ({
   //get message
   useEffect(() => {
     const getChatLists = async () => {
-      const response = await ChatService.getChatLists(user.user_id);
-      const data = await response.json();
-      if (data.success) {
-        setChatLists(data.data);
+      const data = await ChatService.getChatLists(user.user_id);
+      if (data) {
+        setChatLists(data);
+      } else {
+        setChatLists([]);
       }
     };
     getChatLists();
