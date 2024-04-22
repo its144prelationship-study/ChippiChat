@@ -15,7 +15,10 @@ export const chatRepository = {
   },
   findChat: async (participants: string[]) => {
     try {
-      return await Chat.findOne({ participants: { $all: participants } });
+      return await Chat.findOne({
+        participants: { $all: participants },
+        is_group: false,
+      });
     } catch (error) {
       console.error(error);
       return null;
@@ -31,7 +34,7 @@ export const chatRepository = {
   },
   getAllGroupChats: async () => {
     try {
-      return await Chat.find({ isGroup: true });
+      return await Chat.find({ is_group: true });
     } catch (error) {
       console.error(error);
       return null;
@@ -84,6 +87,22 @@ export const chatRepository = {
         }));
         console.log(groupMembers);
         return groupMembers;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  getWhisperChat: async (myId: string, otherId: string) => {
+    try {
+      const chat = await Chat.findOne({
+        participants: { $all: [myId, otherId] },
+        is_group: false,
+      });
+      if (chat) {
+        return chat;
       } else {
         return null;
       }

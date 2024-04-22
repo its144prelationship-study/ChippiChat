@@ -60,7 +60,9 @@ export default function ChatPage() {
           chatColor={chat.chatColor}
           setChangeColor={setChangeColor}
           selectedChat={chat.selectedChat}
-          chatInfo={chat.chatLists.find((c) => c.id === chat.selectedChat) ?? null}
+          chatInfo={
+            chat.chatLists.find((c) => c.id === chat.selectedChat) ?? null
+          }
           groupMembers={chat.groupMembers as GroupMemberType[]}
           chatMessages={chat.chatGroupMessages as any[]}
           isPinned={isPinned}

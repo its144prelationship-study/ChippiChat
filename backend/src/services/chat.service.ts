@@ -190,4 +190,40 @@ export const chatService = {
       };
     }
   },
+  getWhisperChat: async (myId: string, otherId: string) => {
+    try {
+      const existingChat = await chatRepository.getWhisperChat(myId, otherId);
+      if (existingChat) {
+        return {
+          success: true,
+          data: existingChat._id,
+        };
+      }
+      const chat = await chatRepository.createChat({
+        participants: [myId, otherId],
+        group_picture: "1",
+        background_color: "orange",
+        is_group: false,
+      });
+      if (chat) {
+        return {
+          success: true,
+          data: chat._id,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot get chat",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
 };

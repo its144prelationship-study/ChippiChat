@@ -10,20 +10,20 @@ export type groupMembers = {
   id: string;
   name: string;
   profile_picture:
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10"
-  | "11"
-  | "12"
-  | "13"
-  | "14";
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "5"
+    | "6"
+    | "7"
+    | "8"
+    | "9"
+    | "10"
+    | "11"
+    | "12"
+    | "13"
+    | "14";
 };
 
 export type chatGroupMessages = {
@@ -35,6 +35,13 @@ export type chatGroupMessages = {
 export type OnlineUser = {
   user_id: string;
   username: string;
+};
+
+export type userInfo = {
+  username: string;
+  profile_picture: string;
+  user_id: string;
+  socket_id?: string;
 };
 
 export const ChatContext = createContext<ChatContextType>(
@@ -53,10 +60,12 @@ export const ChatContextProvider = ({
   const [chatLists, setChatLists] = useState<ChatListType[]>([]);
   const [currentId, setCurrentId] = useState("00");
   const [groupMembers, setGroupMembers] = useState<groupMembers[]>([]);
-  const [chatGroupMessages, setChatGroupMessages] = useState<chatGroupMessages[]>([]);
+  const [chatGroupMessages, setChatGroupMessages] = useState<
+    chatGroupMessages[]
+  >([]);
   const [newMessage, setNewMessage] = useState<chatGroupMessages>();
   const [chatSocket, setChatSocket] = useState<Socket | null>(null);
-  const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineUser>>();
+  const [onlineUsers, setOnlineUsers] = useState<userInfo[]>();
 
   const fetchChatLists = async () => {
     if (!user.user_id) {
@@ -98,7 +107,7 @@ export const ChatContextProvider = ({
     if (chatSocket === null) return;
     console.log("add online user", user);
     socket.emit("addOnlineUser", user);
-    socket.on("onlineUsers", (users: Map<string, OnlineUser>) => {
+    socket.on("onlineUsers", (users: userInfo[]) => {
       setOnlineUsers(users);
     });
     return () => {
@@ -143,7 +152,7 @@ export const ChatContextProvider = ({
         setChatGroupMessages([]);
       }
     };
-    
+
     fetchAllMembers();
     getMessages();
   }, [selectedChat]);
@@ -153,11 +162,7 @@ export const ChatContextProvider = ({
   };
   //send message
   const sendMessage = useCallback(
-    async (
-      message: string,
-      senderId: string,
-      chatId: string
-    ) => {
+    async (message: string, senderId: string, chatId: string) => {
       const response = await ChatService.sendMessage(chatId, message, senderId);
       setNewMessage(response.data);
       fetchChatLists();

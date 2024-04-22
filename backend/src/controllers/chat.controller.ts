@@ -124,7 +124,7 @@ export const chatController = {
       });
     }
   },
-  getGroupMembers: async (req: Request, res:Response) => {
+  getGroupMembers: async (req: Request, res: Response) => {
     try {
       if (!req.params.chatId) {
         return res.status(400).json({
@@ -134,6 +134,39 @@ export const chatController = {
       }
       const members = await chatService.getGroupMembers(req.params.chatId);
       res.status(200).json(members);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
+  getWhisperChat: async (req: Request, res: Response) => {
+    try {
+      if (!req.body.myId) {
+        return res.status(400).json({
+          success: false,
+          message: "My ID is required",
+        });
+      }
+      if (!req.body.otherId) {
+        return res.status(400).json({
+          success: false,
+          message: "Other ID is required",
+        });
+      }
+      const chat = await chatService.getWhisperChat(
+        req.body.myId,
+        req.body.otherId
+      );
+      if (chat.success) {
+        res.status(200).json(chat);
+      } else {
+        res.status(chat.code).json({
+          success: false,
+          message: chat.message,
+        });
+      }
     } catch (error) {
       res.status(500).json({
         success: false,

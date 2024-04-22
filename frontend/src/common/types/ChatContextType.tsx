@@ -4,6 +4,7 @@ import {
   chatGroupMessages,
   groupMembers,
   OnlineUser,
+  userInfo,
 } from "../context/ChatContext";
 
 export type ChatContextType = {
@@ -15,11 +16,11 @@ export type ChatContextType = {
   chatGroupMessages: chatGroupMessages[];
   newMessage: chatGroupMessages | undefined;
   chatSocket: Socket | null;
-  onlineUsers: Map<string, OnlineUser> | undefined;
+  onlineUsers: userInfo[] | undefined;
   updateSelectedChat: (chatId: string) => void;
   sendMessage: (
     message: string,
     senderId: string,
-    chatId: string,
+    chatId: string
   ) => Promise<void>;
 };
