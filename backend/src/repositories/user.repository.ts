@@ -42,4 +42,13 @@ export const userRepository = {
       return null;
     }
   },
+  getAllUsers: async () => {
+    try {
+      const users = await User.find().select('id username profile_picture');
+      return users;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
 };

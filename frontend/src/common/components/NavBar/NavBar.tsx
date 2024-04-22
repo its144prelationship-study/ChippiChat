@@ -4,6 +4,7 @@ import { useState } from "react";
 import EditProfileModal from "./EditProfileModal/EditProfileModal";
 import { LocalStorageUtils } from "../../utils/LocalStorageUtil";
 import { OriInfo } from "../../../pages/RegisterPage/components/InputForm";
+import socket from "../../socket";
 
 type MenuFocus = "search" | "chat" | "none";
 
@@ -30,17 +31,18 @@ export default function NavBar({
   ];
 
   const handleLogout = () => {
+    socket.emit("logout", user.user_id);
     LocalStorageUtils.removeData("token");
-    navigate("/login");
+    window.location.href = "/";
   };
 
   return (
-    <div className="flex justify-between py-3 px-6 items-center bg-cpc-orange">
+    <div className="flex justify-between px-6 items-center bg-cpc-orange">
       <div className="flex gap-6 items-center text-white font-noto-sans font-light">
         {menuList.map((menu, index) => (
           <div key={menu.focus} className="relative w-[250px]">
             {menuFocus === menu.focus ? ring("#2260FF") : ring("#FFFFFF")}
-            <a
+            <div
               key={index}
               style={{
                 textShadow: `
@@ -50,11 +52,13 @@ export default function NavBar({
               }}
               className={`${
                 menuFocus === menu.focus ? "text-cpc-blue" : ""
-              } w-[170px] cursor-pointer text-3xl font-dm-mono z-3 absolute top-10 left-14`}
-              href={menu.href}
+              } w-[170px] cursor-pointer text-[26px] font-dm-mono z-3 absolute top-10 left-[3rem] flex text-center`}
+              onClick={() => {
+                navigate(menu.href);
+              }}
             >
               {menu.name}
-            </a>
+            </div>
           </div>
         ))}
       </div>
@@ -98,7 +102,7 @@ export default function NavBar({
 const ring = (color: string) => {
   return (
     <svg
-      width="230"
+      width="200"
       height="116"
       viewBox="0 0 228 116"
       fill="none"

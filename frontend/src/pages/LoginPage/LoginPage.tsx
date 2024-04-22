@@ -3,12 +3,15 @@ import InputText from "../../common/components/Input/InputText";
 import { LoginService } from "./services/LoginService";
 import { LoginSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
+import socket from "../../common/socket";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [valid, setValid] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const tempPassword = '*'.repeat(password.length);
+  const tempPassword = "*".repeat(password.length);
 
   if (LocalStorageUtils.getData("token")) {
     window.location.href = "/search";
@@ -22,22 +25,17 @@ export default function LoginPage() {
 
     const loginInfo: LoginSchema = {
       username: username,
-      password: password
+      password: password,
     };
 
-    const response = await LoginService.login(loginInfo);
-    if (!response.success) {
+    const userId = await LoginService.login(loginInfo);
+    if (!userId) {
       setValid(false);
       return;
     }
 
-    setValid(true);
-    LocalStorageUtils.setData("token", response.data.token);
-    LocalStorageUtils.setData("username", response.data.username);
-    LocalStorageUtils.setData("profile_picture",response.data.profile_picture);
-    LocalStorageUtils.setData("userId",response.data._id);
-
-    window.location.href = "/search";
+    // socket.emit("addOnlineUser", userId);
+    navigate("/search");
   };
 
   const onChangePassword = (value: string) => {
@@ -91,12 +89,17 @@ export default function LoginPage() {
             <span className="font-normal text-xl text-cpc-blue">
               Don't have an account yet ?
               <br />
-              <a href="/register" className="underline">
+              <div
+                className="underline"
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
                 SIGN IN
-              </a>
+              </div>
             </span>
             <div
-              className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer border rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"
+              className="flex items-center bg-cpc-green hover:bg-cpc-dark-green cursor-pointer rounded-xl border-2 border-black px-11 py-1 text-2xl font-medium select-none"
               onClick={() => login()}
             >
               LOG IN

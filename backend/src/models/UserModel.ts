@@ -25,6 +25,7 @@ export const UserSchema = new mongoose.Schema({
   profile_picture: {
     type: String,
     enum: ["1", "2", "3", "4", "5", "6", "7", "8", "9","10"],
+    default: "1",
   },
 });
 
@@ -33,16 +34,7 @@ UserSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ 
-    user_id: this._id,
-    username: this.username,
-   }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
-};
-
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+UserSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

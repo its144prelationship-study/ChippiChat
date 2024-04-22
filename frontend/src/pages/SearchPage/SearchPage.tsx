@@ -1,67 +1,66 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import OnlineUser from "./components/OnlineUser";
 import NavBar from "../../common/components/NavBar/NavBar";
-import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
 import { OriInfo } from "../RegisterPage/components/InputForm";
-export default function SearchPage() {
-  const username = LocalStorageUtils.getData("username");
-  const profilePic = LocalStorageUtils.getData("profile_picture");
-  const userId = LocalStorageUtils.getData("userId");
+import { AuthContext } from "../../common/context/AuthContext";
+import { SearchService } from "./services/SearchService";
+import { SearchListType } from "./types/SearchListType";
+import { ChatContext } from "../../common/context/ChatContext";
+import { ChatContextType } from "../../common/types/ChatContextType";
+import { useNavigate } from "react-router-dom";
 
-  const user: OriInfo = {
-    username: username ? username : "",
-    profile_picture: profilePic ? profilePic : "1",
-    userId: userId ? userId : "",
+export default function SearchPage() {
+  const user: OriInfo = useContext(AuthContext);
+  const chat: ChatContextType = useContext(ChatContext);
+  const [state, setState] = useState("group");
+  const [onlineUsers, setOnlineUsers] = useState<SearchListType[]>([]);
+  const navigate = useNavigate();
+
+  const whisperList = function (onlineUsers) {
+    if (!onlineUsers) return [];
+    // const onlineUsersArray = Array.from(onlineUsersMap.values());
+    console.log("online users:", onlineUsers);
+    const onlineusers = onlineUsers.map((us) => {
+      return {
+        chat_id: us.user_id,
+        chat_name: `${us.username}${us.user_id == user.user_id ? " (me)" : ""}`,
+        members: 2,
+        profile_picture: us.profile_picture,
+      };
+    });
+    return onlineusers;
   };
 
-  const [state, setState] = useState("whisper");
-  const onlineUsers = [
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "1",
-    },
-    {
-      chat_name: "BaanNeeMeerakkkk",
-      members: 5,
-      profile_picture: "11",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "2",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "12",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "3",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "13",
-    },
-    {
-      chat_name: "PedPed",
-      members: 2,
-      profile_picture: "4",
-    },
-    {
-      chat_name: "BaanNeeMeerak",
-      members: 5,
-      profile_picture: "14",
-    },
-  ];
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const groups = await SearchService.getAllGroups();
+      const groupList: SearchListType[] = groups.map((group) => {
+        return {
+          chat_id: group._id,
+          chat_name: group.group_name,
+          members: group.participants.length,
+          profile_picture: group.group_picture,
+        };
+      });
+      setOnlineUsers(groupList);
+    };
+
+    if (state === "group") {
+      fetchGroups();
+    } else if (state === "whisper") {
+      const whisper = whisperList(chat.onlineUsers);
+      setOnlineUsers(whisper);
+    }
+  }, [state]);
+
+  const joinGroupChat = async (chat_id: string) => {
+    await SearchService.joinGroupChat(chat_id, user.user_id);
+  };
 
   return (
     <>
-      <NavBar menuFocus={"search"} user={user} />
       <main className="w-full min-h-[100vh] bg-cpc-blue">
+        <NavBar menuFocus={"search"} user={user} />
         <div className="h-full flex justify-center items-center flex-col py-5">
           <h1 className="font-dm-mono font-normal text-4xl text-white [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25">
             Welcome ‘Chippi chappa’
@@ -94,15 +93,37 @@ export default function SearchPage() {
             </p>
           </span>
           <div className="w-3/5 grid grid-cols-3 justify-evenly justify-items-center items-center">
-            {onlineUsers.map((user, index) => {
+            {onlineUsers.map((onlineuser, index) => {
               return (
                 <OnlineUser
                   key={index}
                   is_group={state === "group"}
-                  chat_name={user.chat_name}
-                  members={user.members}
-                  profile_picture={user.profile_picture}
-                  onClick={() => {}}
+                  chat_name={onlineuser.chat_name}
+                  members={onlineuser.members}
+                  profile_picture={onlineuser.profile_picture}
+                  onClick={async () => {
+                    if (state === "group") {
+                      chat.updateSelectedChat(onlineuser.chat_id);
+                      console.log(
+                        "selected group chat_id from search page:",
+                        chat.selectedChat
+                      );
+                      if (state === "group")
+                        await joinGroupChat(onlineuser.chat_id);
+                      navigate("/chat");
+                    } else {
+                      const chat_id = SearchService.getChatId(
+                        user.user_id,
+                        onlineuser.chat_id
+                      );
+                      chat.updateSelectedChat(await chat_id);
+                      console.log(
+                        "selected whisper chat_id from search page:",
+                        chat.selectedChat
+                      );
+                      navigate("/chat");
+                    }
+                  }}
                 />
               );
             })}

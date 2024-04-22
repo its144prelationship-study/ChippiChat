@@ -2,11 +2,12 @@ import { RouteProps } from "react-router-dom";
 import PageRedirect from "./PageRedirect";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
-import SearchPage from "../pages/SearchPage/SearchPage";
-import ChatPage from "../pages/ChatPage/ChatPage";
+import { AuthProvider } from "../common/context/AuthContext";
+import ChatApplication from "../pages/ChatApplication";
 
 export const getPagesData = () =>
-  [ {
+  [
+    {
       path: "/",
       element: <PageRedirect to="/login" />,
     },
@@ -20,10 +21,18 @@ export const getPagesData = () =>
     },
     {
       path: "/search",
-      element: <SearchPage />,
+      element: (
+        <AuthProvider>
+          <ChatApplication path="/search"/>
+        </AuthProvider>
+      ),
     },
     {
       path: "/chat",
-      element: <ChatPage />,
+      element: (
+        <AuthProvider>
+          <ChatApplication path="/chat"/>
+        </AuthProvider>
+      ),
     },
-] as unknown as RouteProps[];
+  ] as unknown as RouteProps[];

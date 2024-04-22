@@ -19,6 +19,7 @@ export default {
       },
       fontFamily: {
         "dm-mono": ["DM Mono", "monospace"],
+        "ibm-plex-mono": ["IBM Plex Mono", "monospace", "IBM Plex Sans Thai", "sans-serif"],
       },
     },
   },
@@ -30,6 +31,13 @@ export default {
         },
         ".inner-shadow-4": {
           boxShadow: "inset 4px 4px 4px rgba(0, 0, 0, 0.25)",
+        },
+        ".scrollbar-none": {
+          "-ms-overflow-style": "none", /* Internet Explorer and Edge */
+          "scrollbar-width": "none", /* Firefox */
+        },
+        ".scrollbar-none::-webkit-scrollbar": {
+          display: "none", /* Chrome, Safari, and Opera */
         },
       };
 

@@ -1,5 +1,8 @@
 import { CreateUser, LoginRequest, UpdateUser } from "../types/user.types";
 import { userRepository } from "../repositories/user.repository";
+import { get } from "http";
+import { JwtUtil } from "../utils/jwt.util";
+import { TokenInfo } from "../types/token.types";
 
 const bcrypt = require("bcrypt");
 
@@ -20,7 +23,6 @@ export const userService = {
         return {
           success: true,
           message: "User created",
-          data: user,
         };
       } else {
         return {
@@ -44,7 +46,7 @@ export const userService = {
       if (!user) {
         return { success: false, code: 400, message: "Cannot update user" };
       }
-      return { success: true, code: 200, data: user };
+      return { success: true, message: "User Updated" };
     } catch (err) {
       console.error(err.message);
       return { success: false, code: 500, message: "Internal server error" };
@@ -88,23 +90,65 @@ export const userService = {
         };
       }
 
-      const token = user.getSignedJwtToken();
+      const payload: TokenInfo = {
+        user_id: user._id
+      };
+      const token = await JwtUtil.signToken(payload);
       return {
         success: true,
         message: "User logged in",
         data: {
-          username: user.username,
           token: token,
-          profile_picture: user.profile_picture,
-          _id: user._id,
         },
       };
     } catch (err) {
       console.error(err.message);
       return {
         success: false,
+        code: 500,
         message: "Internal server error",
       };
     }
   },
+  getUserById: async (id: string) => {
+    try {
+      const user = await userRepository.findUser(id, null);
+      if (user) {
+        return {
+          success: true,
+          message: "User found",
+          data: user
+        }
+      } else {
+        return {
+          success: false,
+          code: 404,
+          message: "User not found"
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error"
+      };
+    }
+  },
+  getAllUsers: async () => {
+    try {
+      const users = await userRepository.getAllUsers();
+      return {
+        success: true,
+        data: users
+      };
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error"
+      };
+    }
+  }
 };
