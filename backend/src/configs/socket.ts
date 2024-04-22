@@ -41,6 +41,12 @@ export const connectSocket = (app: Application) => {
     socket.on("onlineUsers", () => {
       io.emit("onlineUsers", socketService.getOnlineUsers());
     });
+
+    socket.on("logout", (userId: string) => {
+      console.log("disconneted connected for add Online user:");
+      socketService.removeOnlineUser(userId);
+      io.emit("onlineUsers", socketService.getOnlineUsers());
+    });
   });
 
   return server;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import EditProfileModal from "./EditProfileModal/EditProfileModal";
 import { LocalStorageUtils } from "../../utils/LocalStorageUtil";
 import { OriInfo } from "../../../pages/RegisterPage/components/InputForm";
+import socket from "../../socket";
 
 type MenuFocus = "search" | "chat" | "none";
 
@@ -30,6 +31,7 @@ export default function NavBar({
   ];
 
   const handleLogout = () => {
+    socket.emit("logout", user.user_id);
     LocalStorageUtils.removeData("token");
     window.location.href = "/";
   };
@@ -51,7 +53,9 @@ export default function NavBar({
               className={`${
                 menuFocus === menu.focus ? "text-cpc-blue" : ""
               } w-[170px] cursor-pointer text-[26px] font-dm-mono z-3 absolute top-10 left-[3rem] flex text-center`}
-              onClick={() => { navigate(menu.href); }}
+              onClick={() => {
+                navigate(menu.href);
+              }}
             >
               {menu.name}
             </div>
