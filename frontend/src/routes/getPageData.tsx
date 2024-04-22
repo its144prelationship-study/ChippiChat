@@ -2,9 +2,8 @@ import { RouteProps } from "react-router-dom";
 import PageRedirect from "./PageRedirect";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
-import SearchApp from "../pages/SearchPage/SearchApp";
-import ChatApp from "../pages/ChatPage/ChatApp";
 import { AuthProvider } from "../common/context/AuthContext";
+import ChatApplication from "../pages/ChatApplication";
 
 export const getPagesData = () =>
   [
@@ -24,7 +23,7 @@ export const getPagesData = () =>
       path: "/search",
       element: (
         <AuthProvider>
-          <SearchApp />
+          <ChatApplication path="/search"/>
         </AuthProvider>
       ),
     },
@@ -32,7 +31,7 @@ export const getPagesData = () =>
       path: "/chat",
       element: (
         <AuthProvider>
-          <ChatApp />
+          <ChatApplication path="/chat"/>
         </AuthProvider>
       ),
     },

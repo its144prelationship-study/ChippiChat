@@ -10,20 +10,20 @@ export type groupMembers = {
   id: string;
   name: string;
   profile_picture:
-    | "1"
-    | "2"
-    | "3"
-    | "4"
-    | "5"
-    | "6"
-    | "7"
-    | "8"
-    | "9"
-    | "10"
-    | "11"
-    | "12"
-    | "13"
-    | "14";
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "11"
+  | "12"
+  | "13"
+  | "14";
 };
 
 export type chatGroupMessages = {
@@ -48,7 +48,7 @@ export const ChatContextProvider = ({
   children: React.ReactNode;
   user: OriInfo;
 }) => {
-  const [selectedChat, setSelectedChat] = useState("1");
+  const [selectedChat, setSelectedChat] = useState("");
   const [chatColor, setChatColor] = useState("orange");
   const [chatLists, setChatLists] = useState<ChatListType[]>([]);
   const [currentId, setCurrentId] = useState("00");
@@ -80,10 +80,10 @@ export const ChatContextProvider = ({
     };
   }, [chatSocket]);
   //send message
-  useEffect(() => {
-    if (chatSocket === null) return;
-    socket.emit("sendMessage", { ...newMessage, groupMembers, selectedChat });
-  }, [newMessage]);
+  // useEffect(() => {
+  //   if (chatSocket === null) return;
+  //   socket.emit("sendMessage", { ...newMessage, groupMembers, selectedChat });
+  // }, [newMessage]);
   //receive message
   useEffect(() => {
     if (chatSocket === null) return;
@@ -99,8 +99,18 @@ export const ChatContextProvider = ({
   //get message
   useEffect(() => {
     const getChatLists = async () => {
+      if (!user.user_id) {
+        setChatLists([]);
+        return;
+      }
+
       const data = await ChatService.getChatLists(user.user_id);
       if (data) {
+        for (const chat of data) {
+          chat.onChatClick = () => {
+            setSelectedChat(chat.chat_id);
+          };
+        }
         setChatLists(data);
       } else {
         setChatLists([]);
@@ -112,26 +122,34 @@ export const ChatContextProvider = ({
   //get messages and members
   useEffect(() => {
     const getMessages = async () => {
-      const response = await ChatService.getAllMessages(selectedChat);
-      const data = await response.json();
-      if (data.success) {
-        setChatGroupMessages(data.data);
+      if (!selectedChat) {
+        setChatLists([]);
+        return;
+      }
+
+      const data = await ChatService.getAllMessages(selectedChat);
+      if (data) {
+        setChatGroupMessages(data);
+      } else {
+        setChatGroupMessages([]);
       }
     };
     const getAllMembers = async () => {
-      const response = await ChatService.getAllMembers(selectedChat);
-      const data = await response.json();
-      if (data.success) {
-        setGroupMembers(data.data);
+      const data = await ChatService.getAllMembers(selectedChat);
+      if (data) {
+        setGroupMembers(data);
+      } else {
+        setGroupMembers([]);
       }
     };
     getAllMembers();
     getMessages();
   }, [selectedChat]);
   //update selected chat
-  const updateSelectedChat = useCallback((chatId: string) => {
+  const updateSelectedChat = (chatId: string) => {
     setSelectedChat(chatId);
-  }, []);
+    console.log("updated selected chat inside useCallback:", selectedChat);
+  };
   //send message
   const sendMessage = useCallback(
     async (

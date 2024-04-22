@@ -22,7 +22,7 @@ export default function ChatLists({
             key={index}
             chatter={chatList}
             is_selected={selectedChat === chatList.id}
-            setSelectedChat={setSelectedChat}
+            setSelectedChat={(e) => setSelectedChat(e)}
           />
         ))}
       </div>

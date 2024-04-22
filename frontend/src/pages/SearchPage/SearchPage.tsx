@@ -7,14 +7,16 @@ import { SearchService } from "./services/SearchService";
 import { SearchListType } from "./types/SearchListType";
 import { ChatContext } from "../../common/context/ChatContext";
 import { ChatContextType } from "../../common/types/ChatContextType";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchPage() {
   const user: OriInfo = useContext(AuthContext);
   const chat: ChatContextType = useContext(ChatContext);
   const [state, setState] = useState("group");
   const [onlineUsers, setOnlineUsers] = useState<SearchListType[]>([]);
+  const navigate = useNavigate();
   
-  const whisperList = function(onlineUsersMap) {
+  const whisperList = function (onlineUsersMap) {
     if (!onlineUsersMap) return [];
     const onlineUsersArray = Array.from(onlineUsersMap.values());
     const onlineusers = onlineUsersArray.map((us) => {
@@ -68,22 +70,20 @@ export default function SearchPage() {
           <div className="min-w-[200px] w-3/5 h-1 bg-white/35 my-3" />
           <span className="w-3/5 flex flex-row justify-evenly items-center mb-8">
             <p
-              className={`w-2/5 flex place-content-center font-dm-mono text-2xl ${
-                state === "whisper"
+              className={`w-2/5 flex place-content-center font-dm-mono text-2xl ${state === "whisper"
                   ? "font-medium text-cpc-orange"
                   : "font-light text-white"
-              } [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25 hover:scale-[105%] hover:[text-shadow:5px_5px_10px_var(--tw-shadow-color)] duration-300 ease-in-out cursor-pointer`}
+                } [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25 hover:scale-[105%] hover:[text-shadow:5px_5px_10px_var(--tw-shadow-color)] duration-300 ease-in-out cursor-pointer`}
               onClick={() => setState("whisper")}
             >
               Whisper
             </p>
             <div className="w-1 h-10 bg-white shadow-md"></div>
             <p
-              className={`w-2/5 flex place-content-center font-dm-mono text-2xl ${
-                state === "group"
+              className={`w-2/5 flex place-content-center font-dm-mono text-2xl ${state === "group"
                   ? "font-medium text-cpc-orange"
                   : "font-light text-white"
-              } [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25 hover:scale-[105%] hover:[text-shadow:5px_5px_10px_var(--tw-shadow-color)] duration-300 ease-in-out cursor-pointer`}
+                } [text-shadow:0px_4px_4px_var(--tw-shadow-color)] shadow-black/25 hover:scale-[105%] hover:[text-shadow:5px_5px_10px_var(--tw-shadow-color)] duration-300 ease-in-out cursor-pointer`}
               onClick={() => setState("group")}
             >
               Group
@@ -98,11 +98,12 @@ export default function SearchPage() {
                   chat_name={onlineuser.chat_name}
                   members={onlineuser.members}
                   profile_picture={onlineuser.profile_picture}
-                  onClick={() => {
-                    if (onlineuser.chat_id != user.user_id){
+                  onClick={async () => {
+                    if (onlineuser.chat_id != user.user_id) {
                       chat.updateSelectedChat(onlineuser.chat_id);
-                      if (state === "group") joinGroupChat(onlineuser.chat_id);
-                      window.location.href = "/chat";
+                      console.log("selected chat_id from search page:", chat.selectedChat);
+                      if (state === "group") await joinGroupChat(onlineuser.chat_id);
+                      navigate("/chat");
                     }
                   }}
                 />

@@ -14,7 +14,9 @@ export default function ChatListComponent({
   const showedDate = () => {
     const today = new Date();
     const date = new Date(chatter.last_message_time);
-    if (today.getDate() === date.getDate()) {
+    if (!chatter.last_message_time) {
+      return "";
+    } else if (today.getDate() === date.getDate()) {
       return date.toLocaleTimeString("th-TH", {
         hour: "2-digit",
         minute: "2-digit",

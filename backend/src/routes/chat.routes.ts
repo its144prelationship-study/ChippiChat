@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/", chatController.createChat);
 router.get("/groups", chatController.getAllGroupChats);
-router.get("/member/:chatId", chatController.getGroupMembers);
+router.get("/members/:chatId", chatController.getGroupMembers);
 router.put("/join", chatController.joinGroupChat);
 router.put("/leave", chatController.leaveGroupChat);
 router.get("/:userId", chatController.getAllChats);

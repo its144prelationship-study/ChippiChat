@@ -124,7 +124,7 @@ export const chatController = {
       });
     }
   },
-  getGroupMembers: async (req, res) => {
+  getGroupMembers: async (req: Request, res:Response) => {
     try {
       if (!req.params.chatId) {
         return res.status(400).json({

@@ -21,24 +21,43 @@ export const ChatService = {
         }
     },
     getAllMessages: async (chatId: string) => {
-        const response = await fetch(`${environment.backend.url}/api/message/${chatId}`, {
-            method: "GET",
-            headers: {
-            "Content-Type": "application/json",
-            },
+        try {
+            const response = await fetch(`${environment.backend.url}/api/message/${chatId}`, {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                },
+            }
+            );
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                return jsonResponse.data;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            console.log(err);
+            return null;
         }
-        );
-        return response.json();
     },
     getAllMembers: async (chatId: string) => {
-        const response = await fetch(`${environment.backend.url}/api/chat/members/${chatId}`, {
-            method: "GET",
-            headers: {
-            "Content-Type": "application/json",
-            },
+        try {
+            const response = await fetch(`${environment.backend.url}/api/chat/members/${chatId}`, {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                },
+            });
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                return jsonResponse.data;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            console.log(err);
+            return null;
         }
-        );
-        return response.json();
     },
     sendMessage: async (chatId: string, message: string, senderId: string) => {
         const response = await fetch(`${environment.backend.url}/api/message`, {

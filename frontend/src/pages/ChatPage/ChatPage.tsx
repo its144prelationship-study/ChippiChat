@@ -6,62 +6,17 @@ import SelectedChatColorModal from "./components/SelectedChatColorModal";
 import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
 import { AuthContext } from "../../common/context/AuthContext";
-import { ChatListType } from "./types/ChatListType";
 import { ChatContext } from "../../common/context/ChatContext";
 import { ChatContextType } from "../../common/types/ChatContextType";
 
 export default function ChatPage() {
   const user: OriInfo = useContext(AuthContext);
   const chat: ChatContextType = useContext(ChatContext);
-  const [selectedChat, setSelectedChat] = useState(chat.selectedChat);
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
   const [chatColor, setChatColor] = useState("orange");
   const [isPinned, setIsPinned] = useState(false);
-  console.log(chat, user);
-  console.log("chat.chatLists:", chat.chatLists);
-  const chatLists: ChatListType[] = [
-    {
-      id: "1",
-      chatname: "mhadaeng",
-      last_message: "พี่สาวคนสวยฮาฟ",
-      last_message_time: "2024-04-16 12:00",
-      unread: 3,
-      is_pinned: true,
-      profile_picture: "6",
-      is_group: false,
-      members: 2,
-      bg_color: "orange",
-      onChatClick: () => {},
-    },
-    {
-      id: "2",
-      chatname: "WoonHakki",
-      last_message: "อุนักๆ อุนักๆๆ อุนนานัก",
-      last_message_time: "2024-04-15 12:00",
-      unread: 2,
-      is_pinned: false,
-      profile_picture: "1",
-      is_group: false,
-      members: 2,
-      bg_color: "pink",
-      onChatClick: () => {},
-    },
-    {
-      id: "3",
-      chatname: "KanomKaiiiiiiiiiiiiiiiiiiiiiiiii",
-      last_message: "เอาไปเลย",
-      last_message_time: "2024-04-10 12:00",
-      unread: 0,
-      is_pinned: false,
-      profile_picture: "12",
-      is_group: true,
-      members: 3,
-      bg_color: "yellow",
-      onChatClick: () => {},
-    },
-  ];
-  const currentId = "00";
+  console.log(chat);
   const chatMessages = [
     {
       id: "00",
@@ -198,17 +153,17 @@ export default function ChatPage() {
     },
   ];
   useEffect(() => {
-    for (let i = 0; i < chatLists.length; i++) {
-      if (chatLists[i].id === selectedChat) {
-        setChatColor(chatLists[i].bg_color);
-        setIsPinned(chatLists[i].is_pinned);
+    for (let i = 0; i < chat.chatLists.length; i++) {
+      if (chat.chatLists[i].id === chat.selectedChat) {
+        setChatColor(chat.chatLists[i].bg_color);
+        setIsPinned(chat.chatLists[i].is_pinned);
         break;
       }
     }
-  }, [selectedChat, chatColor]);
+  }, [chat.selectedChat, chatColor]);
   useEffect(() => {
-    chat.updateSelectedChat(selectedChat);
-  }, [selectedChat]);
+    chat.updateSelectedChat(chat.selectedChat);
+  }, [chat.selectedChat]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />
@@ -233,14 +188,14 @@ export default function ChatPage() {
         <ChatLists
           chatLists={chat.chatLists}
           setCreateGroup={setCreateGroup}
-          selectedChat={selectedChat}
-          setSelectedChat={setSelectedChat}
+          selectedChat={chat.selectedChat}
+          setSelectedChat={(e) => chat.updateSelectedChat(e)}
         />
         <Chat
           chatColor={chat.chatColor}
           setChangeColor={setChangeColor}
-          selectedChat={selectedChat}
-          chatInfo={chat.chatLists.find((chat) => chat.id === selectedChat) ?? null}
+          selectedChat={chat.selectedChat}
+          chatInfo={chat.chatLists.find((c) => c.id === chat.selectedChat) ?? null}
           groupMembers={chat.groupMembers as any[]}
           chatMessages={chat.chatGroupMessages as any[]}
           isPinned={isPinned}
