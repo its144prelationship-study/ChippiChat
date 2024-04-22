@@ -21,6 +21,5 @@ export type ChatContextType = {
     message: string,
     senderId: string,
     chatId: string,
-    setMessage: React.Dispatch<React.SetStateAction<string>>
   ) => Promise<void>;
 };

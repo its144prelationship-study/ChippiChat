@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import ProfilePicture from "../../../common/components/ProfilePicture/ProfilePicture";
 import PinIcon from "../../../assets/pin-icon.svg";
 import PinnedIcon from "../../../assets/pinned-icon.svg";
@@ -7,6 +7,7 @@ import SendIcon from "../../../assets/send-icon.svg";
 import MyMessage from "./messages/MyMessage";
 import OtherMessage from "./messages/OtherMessage";
 import { ChatListType } from "../types/ChatListType";
+import { ChatContext } from "../../../common/context/ChatContext";
 
 export default function Chat({
   chatColor,
@@ -29,7 +30,8 @@ export default function Chat({
   setIsPinned: (isPinned: boolean) => void;
   userId: string;
 }) {
-  const [messages, setMessages] = useState("");
+  const chat = useContext(ChatContext);
+  const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   let bgColor = "bg-[#E2E7F7]";
   let bgTopColor = "bg-cpc-orange";
@@ -62,9 +64,10 @@ export default function Chat({
       minute: "2-digit",
     });
   };
-  const sendMessages = () => {
-    console.log(messages);
-    setMessages("");
+  const sendMessage = () => {
+    console.log(message);
+    chat.sendMessage(message, userId, selectedChat);
+    setMessage("");
   };
   const timeCompontent = (timestamp: Date) => {
     const text =
@@ -188,25 +191,25 @@ export default function Chat({
         <div className="w-full h-[6.5rem] border-t-[1px] border-black flex flex-row p-2 justify-between px-8">
           <textarea
             placeholder="Enter your text here"
-            value={messages}
+            value={message}
             className="w-11/12 h-auto min-h-10 bg-transparent font-ibm-plex-mono text-black text-lg placeholder:text-[#888888] focus:outline-none"
             onKeyDown={(e) => {
               if (e.key === "Enter" && (e.ctrlKey || e.shiftKey)) {
                 e.preventDefault();
-                setMessages((prev) => `${prev}\n`);
+                setMessage((prev) => `${prev}\n`);
               } else if (e.key === "Enter") {
                 e.preventDefault();
-                sendMessages();
+                sendMessage();
               }
             }}
-            onSubmit={() => sendMessages()}
-            onChange={(e) => setMessages(e.target.value)}
+            onSubmit={() => sendMessage()}
+            onChange={(e) => setMessage(e.target.value)}
           />
           <img
             src={SendIcon}
             alt="send"
             className="h-10 w-10 cursor-pointer"
-            onClick={() => sendMessages()}
+            onClick={() => sendMessage()}
           />
         </div>
       </div>

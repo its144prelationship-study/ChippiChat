@@ -53,9 +53,7 @@ export const ChatContextProvider = ({
   const [chatLists, setChatLists] = useState<ChatListType[]>([]);
   const [currentId, setCurrentId] = useState("00");
   const [groupMembers, setGroupMembers] = useState<groupMembers[]>([]);
-  const [chatGroupMessages, setChatGroupMessages] = useState<
-    chatGroupMessages[]
-  >([]);
+  const [chatGroupMessages, setChatGroupMessages] = useState<chatGroupMessages[]>([]);
   const [newMessage, setNewMessage] = useState<chatGroupMessages>();
   const [chatSocket, setChatSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineUser>>();
@@ -80,10 +78,10 @@ export const ChatContextProvider = ({
     };
   }, [chatSocket]);
   //send message
-  // useEffect(() => {
-  //   if (chatSocket === null) return;
-  //   socket.emit("sendMessage", { ...newMessage, groupMembers, selectedChat });
-  // }, [newMessage]);
+  useEffect(() => {
+    if (chatSocket === null) return;
+    socket.emit("sendMessage", newMessage, groupMembers, selectedChat);
+  }, [newMessage]);
   //receive message
   useEffect(() => {
     if (chatSocket === null) return;
@@ -136,8 +134,10 @@ export const ChatContextProvider = ({
     };
     const getAllMembers = async () => {
       const data = await ChatService.getAllMembers(selectedChat);
+      console.log("groupMembers from calling ChatService:", data);
       if (data) {
         setGroupMembers(data);
+        console.log("groupMembers after being set:", groupMembers)
       } else {
         setGroupMembers([]);
       }
@@ -148,18 +148,15 @@ export const ChatContextProvider = ({
   //update selected chat
   const updateSelectedChat = (chatId: string) => {
     setSelectedChat(chatId);
-    console.log("updated selected chat inside useCallback:", selectedChat);
   };
   //send message
   const sendMessage = useCallback(
     async (
       message: string,
       senderId: string,
-      chatId: string,
-      setMessage: React.Dispatch<React.SetStateAction<string>>
+      chatId: string
     ) => {
       const response = await ChatService.sendMessage(chatId, message, senderId);
-      setMessage("");
       setNewMessage(response.data);
       setChatGroupMessages((prev) => [...prev, response.data]);
     },
