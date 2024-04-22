@@ -1,6 +1,7 @@
 import { CreateChatRequest } from "../types/chat.types";
 import { chatRepository } from "../repositories/chat.repository";
 import { messageService } from "./message.service";
+import { userRepository } from "../repositories/user.repository";
 
 export const chatService = {
   createChat: async (body: CreateChatRequest) => {
@@ -42,33 +43,37 @@ export const chatService = {
       const mappedChats = await Promise.all(
         chats.map(async (chat) => {
           const lastMessage = await messageService.getLastMessage(chat._id);
-          if (lastMessage.success && lastMessage.data) {
-            return {
-              id: chat._id,
-              chatname: chat.group_name,
-              last_message: lastMessage.data.message,
-              last_message_time: lastMessage.data.timestamp,
-              unread: 0,
-              is_pinned: false,
-              profile_picture: chat.group_picture,
-              is_group: chat.is_group,
-              members: chat.participants.length,
-              bg_color: chat.background_color,
-            };
+          const existLastMessage =
+            lastMessage.success && lastMessage.data
+              ? lastMessage.data.message
+              : "";
+          const existLastMessageTime =
+            lastMessage.success && lastMessage.data
+              ? lastMessage.data.timestamp
+              : "";
+          let name = "";
+          let pic = "";
+          if (!chat.is_group) {
+            const id = chat.participants.find((id) => id.toString() !== userId);
+            const user = await userRepository.findUser(id, "");
+            name = user.username;
+            pic = user.profile_picture;
           } else {
-            return {
-              id: chat._id,
-              chatname: chat.group_name,
-              last_message: "",
-              last_message_time: "",
-              unread: 0,
-              is_pinned: false,
-              profile_picture: chat.group_picture,
-              is_group: chat.is_group,
-              members: chat.participants.length,
-              bg_color: chat.background_color,
-            };
+            name = chat.group_name;
+            pic = chat.group_picture;
           }
+          return {
+            id: chat._id,
+            chatname: name,
+            last_message: existLastMessage,
+            last_message_time: existLastMessageTime,
+            unread: 0,
+            is_pinned: false,
+            profile_picture: pic,
+            is_group: chat.is_group,
+            members: chat.participants.length,
+            bg_color: chat.background_color,
+          };
         })
       );
       return {

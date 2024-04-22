@@ -125,13 +125,13 @@ export const ChatContextProvider = ({
     socket.on("newMessage", (message: chatGroupMessages, chatId: string) => {
       if (chatId === selectedChat) {
         setChatGroupMessages((prev) => [...prev, message]);
-        fetchChatLists();
+        // fetchChatLists();
       }
     });
     return () => {
       socket.off("newMessage");
     };
-  }, [socket, selectedChat]);
+  }, [chatSocket, selectedChat]);
   //get message
   useEffect(() => {
     fetchChatLists();
@@ -165,7 +165,7 @@ export const ChatContextProvider = ({
     async (message: string, senderId: string, chatId: string) => {
       const response = await ChatService.sendMessage(chatId, message, senderId);
       setNewMessage(response.data);
-      fetchChatLists();
+      // fetchChatLists();
       setChatGroupMessages((prev) => [...prev, response.data]);
     },
     []
