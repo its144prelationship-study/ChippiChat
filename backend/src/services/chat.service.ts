@@ -231,4 +231,53 @@ export const chatService = {
       };
     }
   },
+  updateChatColor: async (chatId: string, color: string) => {
+    try {
+      const chat = await chatRepository.updateChatColor(chatId, color);
+      if (chat) {
+        return {
+          success: true,
+          message: "Chat color updated",
+          data: chat,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot update chat color",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
+  getChatColor: async (chatId: string) => {
+    try {
+      const chat = await chatRepository.getChatColor(chatId);
+      if (chat) {
+        return {
+          success: true,
+          data: chat.background_color,
+        };
+      } else {
+        return {
+          success: false,
+          code: 500,
+          message: "Cannot get chat color",
+        };
+      }
+    } catch (err) {
+      console.error(err.message);
+      return {
+        success: false,
+        code: 500,
+        message: "Internal server error",
+      };
+    }
+  },
 };

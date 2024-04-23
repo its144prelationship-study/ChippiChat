@@ -19,7 +19,7 @@ export default function SearchPage() {
   const whisperList = function (onlineUsers) {
     if (!onlineUsers) return [];
     // const onlineUsersArray = Array.from(onlineUsersMap.values());
-    console.log("online users:", onlineUsers);
+    // console.log("online users:", onlineUsers);
     const onlineusers = onlineUsers.map((us) => {
       return {
         chat_id: us.user_id,
@@ -104,10 +104,6 @@ export default function SearchPage() {
                   onClick={async () => {
                     if (state === "group") {
                       chat.updateSelectedChat(onlineuser.chat_id);
-                      console.log(
-                        "selected group chat_id from search page:",
-                        chat.selectedChat
-                      );
                       if (state === "group")
                         await joinGroupChat(onlineuser.chat_id);
                       navigate("/chat");
@@ -118,10 +114,6 @@ export default function SearchPage() {
                         onlineuser.chat_id
                       );
                       chat.updateSelectedChat(chat_id);
-                      console.log(
-                        "selected whisper chat_id from search page:",
-                        chat.selectedChat
-                      );
                       navigate("/chat");
                     }
                   }}

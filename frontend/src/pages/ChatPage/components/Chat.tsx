@@ -65,7 +65,7 @@ export default function Chat({
     });
   };
   const sendMessage = () => {
-    console.log(message);
+    // console.log(message);
     chat.sendMessage(message, userId, selectedChat);
     setMessage("");
   };
@@ -74,12 +74,12 @@ export default function Chat({
       timestamp.getDate() == new Date().getDate()
         ? "Today"
         : timestamp.getDate() == new Date().getDate() - 1
-          ? "Yesterday"
-          : timestamp.toLocaleDateString("en-EN", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
+        ? "Yesterday"
+        : timestamp.toLocaleDateString("en-EN", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
     return (
       <div className="w-full flex justify-center">
         <div className="inline-block text text-sm text-center font-ibm-plex-mono py-1 px-3 bg-[#D9D9D9]/70 rounded-full">
@@ -182,9 +182,7 @@ export default function Chat({
             />
           </span>
         </div>
-        <div
-          className="w-full h-[29rem] flex flex-col py-3 px-8 justify-start overflow-y-auto"
-        >
+        <div className="w-full h-[29rem] flex flex-col py-3 px-8 justify-start overflow-y-auto">
           {allMessages}
           <div ref={messagesEndRef}></div>
         </div>

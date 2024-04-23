@@ -24,7 +24,7 @@ export const SearchService = {
   },
   joinGroupChat: async (chatId: string, userId: string) => {
     try {
-      console.log(JSON.stringify({ chatId, userId }));
+      // console.log(JSON.stringify({ chatId, userId }));
       const response = await fetch(`${environment.backend.url}/api/chat/join`, {
         method: "PUT",
         headers: {

@@ -17,17 +17,17 @@ export const socketService = {
     // if (!userExists) {
     //   socketService.onlineUsers.set(socket.id, userId);
     // }
-    console.log(user);
+    // console.log(user);
     user.socket_id = socket.id;
     socketService.onlineUsers.set(user.user_id, user);
-    console.log("online users:", socketService.onlineUsers);
+    // console.log("online users:", socketService.onlineUsers);
   },
   removeOnlineUser: (userId: string) => {
     socketService.onlineUsers.delete(userId);
-    console.log("online users:", socketService.onlineUsers);
+    // console.log("online users:", socketService.onlineUsers);
   },
   getOnlineUsers: () => {
-    console.log("online users:", socketService.onlineUsers);
+    // console.log("online users:", socketService.onlineUsers);
     return Array.from(socketService.onlineUsers.values());
   },
   getSocketId: (user_id: string) => {
