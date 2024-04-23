@@ -58,7 +58,7 @@ export const SearchService = {
         throw new Error("Failed to get chat id");
       }
       const data = await response.json();
-      return data;
+      return data.data;
     } catch (error) {
       console.error(error);
       return null;

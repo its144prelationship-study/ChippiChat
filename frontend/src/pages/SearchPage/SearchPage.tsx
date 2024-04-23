@@ -112,11 +112,12 @@ export default function SearchPage() {
                         await joinGroupChat(onlineuser.chat_id);
                       navigate("/chat");
                     } else {
-                      const chat_id = SearchService.getChatId(
+                      if (user.user_id == onlineuser.chat_id) return;
+                      const chat_id = await SearchService.getChatId(
                         user.user_id,
                         onlineuser.chat_id
                       );
-                      chat.updateSelectedChat(await chat_id);
+                      chat.updateSelectedChat(chat_id);
                       console.log(
                         "selected whisper chat_id from search page:",
                         chat.selectedChat
