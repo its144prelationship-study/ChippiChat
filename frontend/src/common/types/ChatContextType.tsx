@@ -23,4 +23,5 @@ export type ChatContextType = {
     senderId: string,
     chatId: string
   ) => Promise<void>;
+  setChatColor: (color: string) => void;
 };

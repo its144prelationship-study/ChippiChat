@@ -171,6 +171,10 @@ export const ChatContextProvider = ({
     []
   );
 
+  const updateChatColor = (color: string) => {
+    setChatColor(color);
+  }
+
   return (
     <ChatContext.Provider
       value={{
@@ -185,6 +189,7 @@ export const ChatContextProvider = ({
         onlineUsers: onlineUsers,
         updateSelectedChat: updateSelectedChat,
         sendMessage: sendMessage,
+        setChatColor: updateChatColor,
       }}
     >
       {children}

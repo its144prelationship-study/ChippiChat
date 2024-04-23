@@ -14,7 +14,7 @@ export default function ChatPage() {
   const chat: ChatContextType = useContext(ChatContext);
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
-  const [chatColor, setChatColor] = useState("orange");
+  const [chatColor, setChatColor] = useState(chat.chatColor);
   const [isPinned, setIsPinned] = useState(false);
   console.log(chat);
   useEffect(() => {
@@ -29,6 +29,9 @@ export default function ChatPage() {
   useEffect(() => {
     chat.updateSelectedChat(chat.selectedChat);
   }, [chat]);
+  useEffect(() => {
+    chat.setChatColor(chatColor);
+  }, [chatColor]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />
@@ -57,7 +60,7 @@ export default function ChatPage() {
           setSelectedChat={(e) => chat.updateSelectedChat(e)}
         />
         <Chat
-          chatColor={chat.chatColor}
+          chatColor={chatColor}
           setChangeColor={setChangeColor}
           selectedChat={chat.selectedChat}
           chatInfo={
