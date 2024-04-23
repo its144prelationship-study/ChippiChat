@@ -174,4 +174,55 @@ export const chatController = {
       });
     }
   },
+  updateChatColor: async (req: Request, res: Response) => {
+    try {
+      if (!req.params.chatId) {
+        return res.status(400).json({
+          success: false,
+          message: "Chat ID is required",
+        });
+      }
+      if (!req.body.color) {
+        return res.status(400).json({
+          success: false,
+          message: "Color is required",
+        });
+      }
+      const chat = await chatService.updateChatColor(
+        req.params.chatId,
+        req.body.color
+      );
+      if (chat.success) {
+        res.status(200).json(chat);
+      } else {
+        res.status(chat.code).json({
+          success: false,
+          message: chat.message,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
+  getChatColor: async (req: Request, res: Response) => {
+    try {
+      if (!req.params.chatId) {
+        return res.status(400).json({
+          success: false,
+          message: "Chat ID is required",
+        });
+      }
+      const color = await chatService.getChatColor(req.params.chatId);
+      res.status(200).json(color);
+      console.log("color", color);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  },
 };

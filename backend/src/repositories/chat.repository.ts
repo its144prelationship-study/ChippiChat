@@ -85,7 +85,7 @@ export const chatRepository = {
           name: member.username,
           profile_picture: member.profile_picture,
         }));
-        console.log(groupMembers);
+        // console.log(groupMembers);
         return groupMembers;
       } else {
         return null;
@@ -106,6 +106,30 @@ export const chatRepository = {
       } else {
         return null;
       }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  updateChatColor: async (chatId: string, color: string) => {
+    try {
+      const chat = await Chat.findByIdAndUpdate(
+        chatId,
+        {
+          background_color: color,
+        },
+        { new: true }
+      );
+      return chat;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  getChatColor: async (chatId: string) => {
+    try {
+      const chat = await Chat.findById(chatId);
+      return chat;
     } catch (error) {
       console.error(error);
       return null;

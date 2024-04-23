@@ -14,24 +14,25 @@ export default function ChatPage() {
   const chat: ChatContextType = useContext(ChatContext);
   const [createGroup, setCreateGroup] = useState(false);
   const [changeColor, setChangeColor] = useState(false);
-  const [chatColor, setChatColor] = useState(chat.chatColor);
+  const [chatColor, setChatColor] = useState("orange");
   const [isPinned, setIsPinned] = useState(false);
-  console.log(chat);
-  useEffect(() => {
-    for (let i = 0; i < chat.chatLists.length; i++) {
-      if (chat.chatLists[i].id === chat.selectedChat) {
-        setChatColor(chat.chatLists[i].bg_color);
-        setIsPinned(chat.chatLists[i].is_pinned);
-        break;
-      }
-    }
-  }, [chat.chatLists, chat.selectedChat, chatColor]);
+  // console.log(chat);
+  // useEffect(() => {
+  //   for (let i = 0; i < chat.chatLists.length; i++) {
+  //     if (chat.chatLists[i].id === chat.selectedChat) {
+  //       setChatColor(chat.chatLists[i].bg_color);
+  //       setIsPinned(chat.chatLists[i].is_pinned);
+  //       break;
+  //     }
+  //   }
+  // }, [chat.chatLists, chat.selectedChat, chatColor]);
   useEffect(() => {
     chat.updateSelectedChat(chat.selectedChat);
+    // console.log(chat.chatColor, chat.selectedChat);
   }, [chat]);
-  useEffect(() => {
-    chat.setChatColor(chatColor);
-  }, [chatColor]);
+  // useEffect(() => {
+  //   chat.setChatColor(chatColor);
+  // }, [chatColor]);
   return (
     <main className="w-full min-h-[100vh] bg-cpc-blue">
       <NavBar menuFocus="chat" user={user} />

@@ -96,7 +96,7 @@ export const ChatContextProvider = ({
   };
   //connect to socket
   useEffect(() => {
-    console.log("connect to socket from chat context");
+    // console.log("connect to socket from chat context");
     if (user.user_id) setChatSocket(socket);
     // return () => {
     //   socket.emit("disconnect", user.user_id);
@@ -105,7 +105,7 @@ export const ChatContextProvider = ({
   //add online user
   useEffect(() => {
     if (chatSocket === null) return;
-    console.log("add online user", user);
+    // console.log("add online user", user);
     socket.emit("addOnlineUser", user);
     socket.on("onlineUsers", (users: userInfo[]) => {
       setOnlineUsers(users);
@@ -152,13 +152,33 @@ export const ChatContextProvider = ({
         setChatGroupMessages([]);
       }
     };
-
+    // const getColor = async () => {
+    //   if (!selectedChat) {
+    //     setChatColor("orange");
+    //     return;
+    //   }
+    //   const data = await ChatService.getChatColor(selectedChat);
+    //   if (data) {
+    //     setChatColor(data);
+    //   } else {
+    //     setChatColor("orange");
+    //   }
+    // };
     fetchAllMembers();
     getMessages();
+    // getColor();
   }, [selectedChat]);
   //update selected chat
-  const updateSelectedChat = (chatId: string) => {
+  const updateSelectedChat = async (chatId: string) => {
     setSelectedChat(chatId);
+    fetchChatLists();
+    // const data = await ChatService.getChatColor(selectedChat);
+    // console.log("selectedChat", selectedChat, data);
+    // if (data) {
+    //   setChatColor(data);
+    // } else {
+    //   setChatColor("orange");
+    // }
   };
   //send message
   const sendMessage = useCallback(
@@ -172,8 +192,9 @@ export const ChatContextProvider = ({
   );
 
   const updateChatColor = (color: string) => {
+    ChatService.updateChatColor(selectedChat, color);
     setChatColor(color);
-  }
+  };
 
   return (
     <ChatContext.Provider
