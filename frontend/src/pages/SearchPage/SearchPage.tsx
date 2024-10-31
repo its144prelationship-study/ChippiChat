@@ -4,8 +4,8 @@ import NavBar from "../../common/components/NavBar/NavBar";
 import { OriInfo } from "../RegisterPage/components/InputForm";
 import { AuthContext } from "../../common/context/AuthContext";
 import { SearchService } from "./services/SearchService";
-import { SearchListType } from "./types/SearchListType";
-import { ChatContext } from "../../common/context/ChatContext";
+import { SearchListDataType, SearchListType } from "./types/SearchListType";
+import { ChatContext, userInfo } from "../../common/context/ChatContext";
 import { ChatContextType } from "../../common/types/ChatContextType";
 import { useNavigate } from "react-router-dom";
 
@@ -16,11 +16,11 @@ export default function SearchPage() {
   const [onlineUsers, setOnlineUsers] = useState<SearchListType[]>([]);
   const navigate = useNavigate();
 
-  const whisperList = function (onlineUsers) {
+  const whisperList = function (onlineUsers : userInfo[] | undefined) {
     if (!onlineUsers) return [];
     // const onlineUsersArray = Array.from(onlineUsersMap.values());
     // console.log("online users:", onlineUsers);
-    const onlineusers = onlineUsers.map((us) => {
+    const onlineusers: SearchListType[] = onlineUsers.map((us) => {
       return {
         chat_id: us.user_id,
         chat_name: `${us.username}${us.user_id == user.user_id ? " (me)" : ""}`,
@@ -34,7 +34,7 @@ export default function SearchPage() {
   useEffect(() => {
     const fetchGroups = async () => {
       const groups = await SearchService.getAllGroups();
-      const groupList: SearchListType[] = groups.map((group) => {
+      const groupList: SearchListType[] = groups.map((group:SearchListDataType) => {
         return {
           chat_id: group._id,
           chat_name: group.group_name,

@@ -3,7 +3,6 @@ import { ChatListType } from "../../pages/ChatPage/types/ChatListType";
 import {
   chatGroupMessages,
   groupMembers,
-  OnlineUser,
   userInfo,
 } from "../context/ChatContext";
 

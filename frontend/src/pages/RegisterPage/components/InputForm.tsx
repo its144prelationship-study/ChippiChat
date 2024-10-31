@@ -166,7 +166,7 @@ export default function InputForm({
               setValidUsername(0);
               onClose();
             } else {
-              window.location.href = "http://localhost:5173/login";
+              window.location.href = window.location.origin + '/login';
             }
           }}
         />
@@ -221,7 +221,7 @@ export default function InputForm({
             const success = await register();
             if (success) {
               setIsConfirmOpen(false);
-              window.location.href = "http://localhost:5173/login";
+              window.location.href = window.location.origin + '/login';
             } else {
               setIsConfirmOpen(false);
               alert("Cannot Create User");

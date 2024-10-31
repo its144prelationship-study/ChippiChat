@@ -1,5 +1,5 @@
 export const environment = {
   backend: {
-    url: "http://localhost:5789",
+    url: import.meta.env.VITE_BACKEND_URL || "http://localhost:5789",
   },
 };
