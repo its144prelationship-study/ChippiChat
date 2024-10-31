@@ -4,3 +4,10 @@ export type SearchListType = {
     members: number;
     profile_picture: string;
 }
+
+export type SearchListDataType = {
+    _id: string;
+    group_name: string;
+    participants: [];
+    group_picture: string;
+}

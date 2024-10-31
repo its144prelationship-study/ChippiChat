@@ -3,7 +3,6 @@ import InputText from "../../common/components/Input/InputText";
 import { LoginService } from "./services/LoginService";
 import { LoginSchema } from "./types/LoginType";
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtil";
-import socket from "../../common/socket";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
