@@ -1,5 +1,5 @@
 export const environment = {
   backend: {
-    url: "http://localhost:5789",
+    url: "http://172.20.10.2:5789",
   },
 };
